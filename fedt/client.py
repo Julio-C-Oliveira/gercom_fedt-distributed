@@ -73,11 +73,11 @@ def run():
             trees_by_client = server_reply_settings.trees_by_client
             server_round = getattr(server_reply_settings, "current_round", None)
 
-            logging.warning(f"Trees by client: {trees_by_client}, round: {round}")
+            logger.warning(f"Trees by client: {trees_by_client}, round: {round}")
 
             wait_start = time.time()
             while server_round is not None and server_round < round:
-                logging.info(f"Servidor no round {server_round}, esperando atingir round {round}...")
+                logger.info(f"Servidor no round {server_round}, esperando atingir round {round}...")
 
                 time.sleep(5)
 
@@ -104,7 +104,7 @@ def run():
             client = HouseClient(trees_by_client, ID)
             (absolute_error, squared_error, (pearson_corr, p_value), best_trees) = client.evaluate(server_model)
 
-            logging.info(f"\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
+            logger.info(f"\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
 
             serialise_trees = utils.serialise_several_trees(client.trees)
 
@@ -113,7 +113,7 @@ def run():
             for reply in server_replies:
                 server_trees_serialised.append(reply.serialised_tree)
 
-            logging.info("Modelo global recebido")
+            logger.info("Modelo global recebido")
 
             request_end = fedT_pb2.Request_Server()
             request_end.client_ID = ID
@@ -123,7 +123,7 @@ def run():
             server_model.estimators_ = server_trees_deserialised
             (absolute_error, squared_error, (pearson_corr, p_value), best_trees) = client.evaluate(server_model)
 
-            logging.info(f"\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
+            logger.info(f"\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
 
             time.sleep(15)
 
