@@ -17,6 +17,8 @@ from sklearn.metrics import mean_absolute_error
 
 import logging
 
+import gc # pra controlar diretamente o garbage collector do python.
+
 ##########################################################################
 # Configuração de logging:
 ##########################################################################
@@ -62,6 +64,10 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         self.round = 0
 
         self.model = RandomForestRegressor(n_estimators=self.get_number_of_trees_per_client())
+
+        # [New]: Reduzindo pra um, tenho que limitar a profundidade à 3 também.
+        # self.model = RandomForestRegressor(n_estimators=1)
+
         data_train, label_train = utils.load_dataset_for_server()
         utils.set_initial_params(self.model, data_train, label_train)
 
@@ -253,6 +259,10 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         - None
         """
         logger.warning("Resetando estado do servidor...")
+
+        # [New]: Liberando os dados utilizados anteriormente.
+        # del self.model, self.global_trees, self.strategy
+        # gc.collect()
 
         self.model = RandomForestRegressor(n_estimators=self.get_number_of_trees_per_client())
         data_train, label_train = utils.load_dataset_for_server()
