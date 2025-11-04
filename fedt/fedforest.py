@@ -7,9 +7,11 @@ from scipy.stats import pearsonr
 import numpy as np
 
 import random
-import warnings
 
-warnings.filterwarnings("ignore")
+import warnings
+from scipy.stats import ConstantInputWarning
+
+warnings.filterwarnings("ignore", category=ConstantInputWarning)
 
 from fedt import utils
 

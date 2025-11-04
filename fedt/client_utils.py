@@ -10,6 +10,11 @@ from scipy.stats import pearsonr
 
 from fedt import utils
 
+import warnings
+from scipy.stats import ConstantInputWarning
+
+warnings.filterwarnings("ignore", category=ConstantInputWarning)
+
 NUMBER_OF_PARTITIONS = 4
 
 class HouseClient():
