@@ -1,0 +1,5 @@
+build.zip
+build/
+fedt.egg-info/
+energydata_complete.csv
+results/

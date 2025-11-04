@@ -1,0 +1,58 @@
+[build-system]
+requires = [
+    "setuptools>=68.0", 
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fedt"
+version = "0.1.0"
+description = "Federated Learning for Decision Trees"
+authors = [{ name = "Julio C. Oliveira", email = "julio3.oliveir@gmail.com" }]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=2.3.3",
+    "pandas>=2.2.3",
+    "scikit-learn>=1.7.2",
+    "protobuf>=6.33.0",
+    "grpcio>=1.76.0",
+    "grpcio-tools>=1.76.0",
+    "mypy-protobuf>=3.6.0"
+]
+
+[project.scripts]
+fedt = "fedt.cli:main"
+
+[tool.setuptools]
+packages = ["fedt"]
+
+[paths]
+client_script_path = '/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/new_gRPC/fedt/client.py'
+results_folder = '/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/new_gRPC/results'
+dataset_path = '/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/new_gRPC/energydata_complete.csv'
+
+[settings]
+number_of_jobs = 12
+number_of_clients = 5
+number_of_rounds = 40
+aggregation_strategy = "random"
+
+[settings.client]
+timeout = 360
+debug = true
+
+[settings.server]
+IP = "10.126.1.109"
+port = "50051"
+pearson_threshold = 0.3 # 0.34
+number_of_trees_in_start = 10
+increase_of_trees_per_round = 10
+validate_dataset_size = 1000
+print_every_trees_sent = 50
+timeout = 120
+debug = true
+
+[dataset]
+train_test_split_size = 0.25
+percentage_value_of_samples_per_client = 20
