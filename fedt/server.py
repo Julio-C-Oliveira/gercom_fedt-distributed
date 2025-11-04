@@ -165,9 +165,9 @@ class FedT(fedT_pb2_grpc.FedTServicer):
 
         server_reply = fedT_pb2.Forest_Server()
         for tree in serialised_global_trees:
+            number_of_sended_trees += 1
             if number_of_sended_trees % server_config["print_every_trees_sent"] == 0:
                 logger.info(f"Client ID: {client_ID}. Àrvore {number_of_sended_trees} de {number_of_trees} enviada.")
-            number_of_sended_trees += 1
             server_reply.serialised_tree = tree
             yield server_reply
 
