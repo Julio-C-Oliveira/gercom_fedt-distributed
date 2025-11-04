@@ -33,52 +33,23 @@ logger = utils.setup_logger(
 ##########################################################################
 def add_end_time(runtime_clients, ID, end_time):
     """
-    ### Função:
-    Adicionar o tempo em que a execução foi finalizada à lista.
-    ### Args:
-    - Runtime Clients: Uma lista que contém o ID do cliente e o tempo em que ele iniciou a execução.
-    - ID: O ID que deve ser procurado na lista.
-    - End Time: O tempo em que a execução foi encerrada.
-    ### Returns:
-    - Runtime Clients: Lista com o tempo de fim da execução já adicionado.
+    Adiciona o tempo de término na lista de clientes em execução.
     """
-    idx = 0
-    for i, runtime in enumerate(runtime_clients):
-        if runtime[0] == ID:
-            idx = i
-
-    runtime_clients[idx][1] = [runtime_clients[idx][1], end_time]
+    for i, (client_id, start_time) in enumerate(runtime_clients):
+        if client_id == ID:
+            runtime_clients[i] = (client_id, (start_time, end_time))
+            break
     return runtime_clients
 
 def sum_runtime(runtime_list):
-    """
-    ### Função:
-    Somar os tempos de execução.
-    ### Args: 
-    - Runtime List: Lista com os tempos de execução.
-    ### Returns:
-    - Sum Runtime: Resultado da soma dos tempos de execução.
-    """
-    contador = datetime.timedelta()
-    for runtime in runtime_list:
-        contador += runtime
-
-    return contador
+    """Soma tempos de execução em segundos."""
+    return sum(runtime_list)
 
 def average_runtime(runtime_clients):
-    """
-    ### Função:
-    Calcular a média do tempo de execução dos clientes.
-    ### Args:
-    - Runtime Clients: Lista com os IDs e tempo de execuções.
-    ### Returns:
-    - Runtime Average: Tempo de execução médio
-    """
-    runtime_list = []
-    for runtime in runtime_clients:
-        runtime_list.append(runtime[1][1] - runtime[1][0])
+    """Calcula o tempo médio de execução."""
+    runtime_list = [(end - start) for (_, (start, end)) in runtime_clients]
     runtime_sum = sum_runtime(runtime_list)
-    runtime_average = runtime_sum/number_of_clients
+    runtime_average = runtime_sum / number_of_clients
     return runtime_average
 
 ##########################################################################
@@ -210,7 +181,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         ### Returns:
         - Server Message: Ok, confirmação de que a mensagem foi recebida.
         """
-        end_time = datetime.datetime.now()
+        end_time = time.time()
         self.runtime_clients = add_end_time(self.runtime_clients, request.client_ID, end_time)
         self.clientes_respondidos += 1
 
@@ -220,9 +191,9 @@ class FedT(fedT_pb2_grpc.FedTServicer):
             logger.info("Todos os clientes finalizaram.")
 
             for i in self.runtime_clients:
-                logger.debug(f"Client ID: {i[0]} → tempo de execução: {i[1][1] - i[1][0]}")
+                logger.debug(f"Client ID: {i[0]} → tempo de execução: {time.strftime('%H:%M:%S', time.gmtime(i[1][1] - i[1][0]))}")
 
-            logger.info(f"Tempo de Execução Médio: {average_runtime(self.runtime_clients)}")
+            logger.info(f"Tempo de Execução Médio: {time.strftime('%H:%M:%S', time.gmtime(average_runtime(self.runtime_clients)))}")
             time.sleep(5)
             self.reset_server()
 
@@ -244,7 +215,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         ### Returns:
         - Server Message: Árvores serializadas em bytes.
         """
-        start_time = datetime.datetime.now()
+        start_time = time.time()
         self.runtime_clients.append([request.client_ID, start_time])
 
         logger.info(f"Client ID: {request.client_ID}, requisitando o modelo do servidor.")
