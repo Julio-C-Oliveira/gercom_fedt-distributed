@@ -4,3 +4,4 @@ fedt/__pycache__/
 fedt.egg-info/
 energydata_complete.csv
 results/
+*.log
