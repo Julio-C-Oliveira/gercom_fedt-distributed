@@ -63,7 +63,11 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         super().__init__()
         self.round = 0
 
-        self.model = RandomForestRegressor(n_estimators=self.get_number_of_trees_per_client())
+        self.model = RandomForestRegressor(
+            n_estimators=self.get_number_of_trees_per_client(),
+            max_depth=3,
+            warm_start=True
+        )
 
         # [New]: Reduzindo pra um, tenho que limitar a profundidade à 3 também.
         # self.model = RandomForestRegressor(n_estimators=1)
@@ -275,8 +279,8 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         logger.warning("Resetando estado do servidor...")
 
         # [New]: Liberando os dados utilizados anteriormente.
-        # del self.model, self.global_trees, self.strategy
-        # gc.collect()
+        del self.model, self.global_trees, self.strategy
+        gc.collect()
 
         self.model = RandomForestRegressor(n_estimators=self.get_number_of_trees_per_client())
         data_train, label_train = utils.load_dataset_for_server()

@@ -106,25 +106,17 @@ def run():
             server_trees_deserialise = utils.deserialise_several_trees(server_trees_serialised)
 
             # [New]: Removendo as árvores serializadas.
-            # del server_trees_serialised
-            # gc.collect()
+            del server_trees_serialised
+            gc.collect()
 
-            server_model = RandomForestRegressor(warm_start=True)
-            data_valid, label_valid = utils.load_dataset_for_server()
-            server_model.fit(data_valid, label_valid)
+            self.model = RandomForestRegressor(
+                n_estimators=self.get_number_of_trees_per_client(),
+                max_depth=3,
+                warm_start=True
+            )
+
+            server_model.fit(dataset[0], dataset[1])
             server_model.estimators_ = server_trees_deserialise
-
-            # [New]: Alteração no modo de inicializar o modelo global:
-            # server_model = RandomForestRegressor(warm_start=True)
-            # data_valid, label_valid = utils.load_dataset_for_server()
-
-            # server_model.n_features_in_ = data_valid.shape[1]
-            # server_model.n_outputs_ = 1
-            # server_model.estimators_ = server_trees_deserialise
-
-            # [New]: Excluindo os dados de validação. Vale a pena mudar pra carregar os dados com duas amostras apenas, ou usar o do cliente mesmo já que só precisa do shape.
-            # del data_valid, label_valid
-            # gc.collect()
 
             client = HouseClient(trees_by_client, dataset, ID)
             (absolute_error, squared_error, (pearson_corr, p_value), best_trees) = client.evaluate(server_model)
@@ -139,8 +131,8 @@ def run():
                 server_trees_serialised.append(reply.serialised_tree)
 
             # [New]: Excluir as árvores serializadas após enviar.
-            # del serialise_trees
-            # gc.collect()
+            del serialise_trees
+            gc.collect()
 
             logger.info("Modelo global recebido")
 
@@ -155,8 +147,8 @@ def run():
             logger.info(f"\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
 
             # [New]: Excluindo as árvores serializadas e resetando o cliente:
-            # del server_model, client, server_trees_serialised, server_trees_deserialised
-            # gc.collect()
+            del server_model, client, server_trees_serialised, server_trees_deserialised
+            gc.collect()
 
             time.sleep(15)
 
