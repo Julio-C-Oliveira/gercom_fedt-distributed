@@ -19,7 +19,8 @@ dependencies = [
     "grpcio>=1.76.0",
     "grpcio-tools>=1.76.0",
     "mypy-protobuf>=3.6.0",
-    "colorlog>=6.10.1"
+    "colorlog>=6.10.1",
+    "psutil>=7.1.3"
 ]
 
 [project.scripts]
@@ -29,9 +30,11 @@ fedt = "fedt.cli:main"
 packages = ["fedt"]
 
 [paths]
-client_script_path = '/home/julio/Documentos/gercom_fedt-distributed/fedt/client.py'
-results_folder = '/home/julio/Documentos/gercom_fedt-distributed/results'
-dataset_path = '/home/julio/Documentos/gercom_fedt-distributed/energydata_complete.csv'
+base_path = '.'
+results_folder = 'results'
+logs_folder = 'logs'
+client_script_path = 'fedt/client.py'
+dataset_path = 'energydata_complete.csv'
 
 [settings]
 number_of_jobs = 2
