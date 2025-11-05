@@ -109,7 +109,7 @@ def run():
             del server_trees_serialised
             gc.collect()
 
-            self.model = RandomForestRegressor(
+            server_model = RandomForestRegressor(
                 n_estimators=trees_by_client,
                 max_depth=3,
                 warm_start=True
