@@ -72,6 +72,8 @@ def run():
     with grpc.insecure_channel(f"{server_ip}:{server_port}") as channel:
         stub = fedT_pb2_grpc.FedTStub(channel)
 
+        dataset = [utils.load_house_client()]
+
         for round in range(number_of_rounds):
 
             request_settings = fedT_pb2.Request_Server()
@@ -124,7 +126,7 @@ def run():
             # del data_valid, label_valid
             # gc.collect()
 
-            client = HouseClient(trees_by_client, ID)
+            client = HouseClient(trees_by_client, dataset, ID)
             (absolute_error, squared_error, (pearson_corr, p_value), best_trees) = client.evaluate(server_model)
 
             logger.info(f"\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")

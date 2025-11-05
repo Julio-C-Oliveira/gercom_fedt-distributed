@@ -19,9 +19,9 @@ NUMBER_OF_PARTITIONS = 4
 
 class HouseClient():
 
-    def __init__(self, trees_by_client: int, ID) -> None:
+    def __init__(self, trees_by_client: int, dataset, ID) -> None:
         # Load house data
-        self.X_train, self.y_train, self.X_test, self.y_test = utils.load_house_client()
+        self.X_train, self.y_train, self.X_test, self.y_test = dataset
 
         # Initialize local model and set initial_parameters
         self.local_model = RandomForestRegressor(n_estimators=trees_by_client)
