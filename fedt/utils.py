@@ -220,12 +220,11 @@ def setup_logger(name, log_file, level=logging.INFO):
         style="%",
     )
 
-
     console_handler = colorlog.StreamHandler()
     console_handler.setFormatter(color_formatter)
 
     # --- FORMATADOR PADRÃO PARA O ARQUIVO ---
-    file_handler = logging.FileHandler(log_file)
+    file_handler = logging.FileHandler(f"logs/{log_file}")
     file_formatter = logging.Formatter(
         "%(asctime)s [%(levelname)s] [%(name)s] %(message)s"
     )
