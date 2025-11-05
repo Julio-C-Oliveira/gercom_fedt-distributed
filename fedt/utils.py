@@ -1,4 +1,4 @@
-from fedt.settings import dataset_path, percentage_value_of_samples_per_client
+from fedt.settings import dataset_path, percentage_value_of_samples_per_client, validate_dataset_size
 
 import numpy as np
 import pandas as pd
@@ -131,7 +131,7 @@ def load_server_side_validation_data():
     data, label  = load_dataset()
 
     _, data_valid, _, label_valid = train_test_split(data, label, test_size=0.2)
-    return data_valid[-1000:], label_valid[-1000:]
+    return data_valid[-validate_dataset_size:], label_valid[-validate_dataset_size:]
 
 def serialise_tree(tree_model) -> bytes:
     """
