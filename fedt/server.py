@@ -206,9 +206,8 @@ class FedT(fedT_pb2_grpc.FedTServicer):
             logger.warning(f"Round {self.round} finalizado")
             self.round += 1
 
-            if self.round > number_of_rounds:
-                logger.warning("Encerrando treinamento...")
-                self.grpc_server.stop(0)
+            if self.round >= number_of_rounds:
+                self.shutdown_server()
                 return fedT_pb2.OK(ok=1)
             else:
                 logger.warning(f"Round {self.round} iniciado")
@@ -216,6 +215,13 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         answer = fedT_pb2.OK()
         answer.ok = 1
         return answer
+
+    def shutdown_server(self, delay=5):
+        def _shutdown():
+            logger.warning(f"Encerrando treinamento em {delay} segundos...")
+            self.grpc_server.stop(0)
+
+        threading.Timer(delay, _shutdown).start()
     
     def get_server_model(self, request, context):
         """
