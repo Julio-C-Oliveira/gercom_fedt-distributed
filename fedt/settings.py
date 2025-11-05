@@ -21,6 +21,7 @@ client_debug = config["settings"]["client"]["debug"]
 server_config = config["settings"]["server"]
 server_ip = config["settings"]["server"]["IP"]
 server_port = config["settings"]["server"]["port"]
+validate_dataset_size = config["settings"]["server"]["validate_dataset_size"]
 
 train_test_split_size = config["dataset"]["train_test_split_size"]
 percentage_value_of_samples_per_client = config["dataset"]["percentage_value_of_samples_per_client"]
