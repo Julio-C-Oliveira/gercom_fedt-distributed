@@ -36,7 +36,7 @@ dataset_path = '/home/julio/Documentos/gercom_fedt-distributed/energydata_comple
 [settings]
 number_of_jobs = 2
 number_of_clients = 2
-number_of_rounds = 40
+number_of_rounds = 4
 aggregation_strategy = "random"
 
 [settings.client]
