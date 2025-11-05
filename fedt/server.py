@@ -219,7 +219,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
     def shutdown_server(self, delay=5):
         def _shutdown():
             logger.warning(f"Encerrando treinamento em {delay} segundos...")
-            self.grpc_server.stop(0)
+            self.grpc_server.stop(delay)
 
         threading.Timer(delay, _shutdown).start()
     
