@@ -29,13 +29,15 @@ fedt = "fedt.cli:main"
 packages = ["fedt"]
 
 [paths]
-client_script_path = '/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/new_gRPC/fedt/client.py'
-results_folder = '/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/new_gRPC/results'
-dataset_path = '/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/new_gRPC/energydata_complete.csv'
+base_path = '.'
+results_folder = 'results'
+logs_folder = 'logs'
+client_script_path = 'fedt/client.py'
+dataset_path = 'energydata_complete.csv'
 
 [settings]
 number_of_jobs = 12
-number_of_clients = 5
+number_of_clients = 4
 number_of_rounds = 40
 aggregation_strategy = "random"
 

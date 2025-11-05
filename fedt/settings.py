@@ -1,14 +1,17 @@
 import tomllib
 from pathlib import Path
 
-pyproject_path = "/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/new_gRPC/pyproject.toml"
+pyproject_path = Path(__file__).resolve().parent.parent / "pyproject.toml"
 
 with open(pyproject_path, "rb") as file:
     config = tomllib.load(file)
 
-results_folder = config["paths"]["results_folder"]
-dataset_path = config["paths"]["dataset_path"]
-client_script_path = config["paths"]["client_script_path"]
+base_path = (pyproject_path.parent / config["paths"]["base_path"]).resolve()
+
+results_folder = (base_path / config["paths"]["results_folder"]).resolve()
+logs_folder = (base_path / config["paths"]["logs_folder"]).resolve()
+client_script_path = (base_path / config["paths"]["client_script_path"]).resolve()
+dataset_path = (base_path / config["paths"]["dataset_path"]).resolve()
 
 number_of_jobs = config["settings"]["number_of_jobs"]
 number_of_clients = config["settings"]["number_of_clients"]
