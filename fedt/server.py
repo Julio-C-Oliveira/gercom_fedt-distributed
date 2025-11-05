@@ -188,29 +188,31 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         - Server Message: Ok, confirmação de que a mensagem foi recebida.
         """
         end_time = time.time()
-        self.runtime_clients = add_end_time(self.runtime_clients, request.client_ID, end_time)
-        self.clientes_respondidos += 1
 
-        logger.info(f"O cliente {request.client_ID} finalizou round. Clientes respondidos: {self.clientes_respondidos}/{number_of_clients}")
+        with self.lock:
+            self.runtime_clients = add_end_time(self.runtime_clients, request.client_ID, end_time)
+            self.clientes_respondidos += 1
 
-        if self.clientes_respondidos == number_of_clients:
-            logger.info("Todos os clientes finalizaram.")
+            logger.info(f"O cliente {request.client_ID} finalizou round. Clientes respondidos: {self.clientes_respondidos}/{number_of_clients}")
 
-            for i in self.runtime_clients:
-                logger.debug(f"Client ID: {i[0]} → tempo de execução: {time.strftime('%H:%M:%S', time.gmtime(i[1][1] - i[1][0]))}")
+            if self.clientes_respondidos == number_of_clients:
+                logger.info("Todos os clientes finalizaram.")
 
-            logger.info(f"Tempo de Execução Médio: {time.strftime('%H:%M:%S', time.gmtime(average_runtime(self.runtime_clients)))}")
-            time.sleep(5)
-            self.reset_server()
+                for i in self.runtime_clients:
+                    logger.debug(f"Client ID: {i[0]} → tempo de execução: {time.strftime('%H:%M:%S', time.gmtime(i[1][1] - i[1][0]))}")
 
-            logger.warning(f"Round {self.round} finalizado")
-            self.round += 1
+                logger.info(f"Tempo de Execução Médio: {time.strftime('%H:%M:%S', time.gmtime(average_runtime(self.runtime_clients)))}")
+                time.sleep(5)
+                self.reset_server()
 
-            if self.round >= number_of_rounds:
-                self.shutdown_server()
-                return fedT_pb2.OK(ok=1)
-            else:
-                logger.warning(f"Round {self.round} iniciado")
+                logger.warning(f"Round {self.round} finalizado")
+                self.round += 1
+
+                if self.round >= number_of_rounds:
+                    self.shutdown_server()
+                    return fedT_pb2.OK(ok=1)
+                else:
+                    logger.warning(f"Round {self.round} iniciado")
 
         answer = fedT_pb2.OK()
         answer.ok = 1
@@ -219,7 +221,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
     def shutdown_server(self, delay=5):
         def _shutdown():
             logger.warning(f"Encerrando treinamento em {delay} segundos...")
-            self.grpc_server.stop(0)
+            self.grpc_server.stop(delay)
 
         threading.Timer(delay, _shutdown).start()
     
