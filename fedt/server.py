@@ -1,4 +1,4 @@
-from fedt.settings import server_config, number_of_jobs, number_of_clients, aggregation_strategy
+from fedt.settings import server_config, number_of_jobs, number_of_clients, aggregation_strategy, number_of_rounds
 
 from concurrent import futures
 import threading
@@ -205,7 +205,13 @@ class FedT(fedT_pb2_grpc.FedTServicer):
 
             logger.warning(f"Round {self.round} finalizado")
             self.round += 1
-            logger.warning(f"Round {self.round} iniciado")
+
+            if self.round > number_of_rounds:
+                logger.warning("Encerrando treinamento...")
+                self.grpc_server.stop(0)
+                return fedT_pb2.OK(ok=1)
+            else:
+                logger.warning(f"Round {self.round} iniciado")
 
         answer = fedT_pb2.OK()
         answer.ok = 1
@@ -284,7 +290,11 @@ def run_server():
     logger.info("Servidor inicializando...")
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=number_of_jobs))
-    fedT_pb2_grpc.add_FedTServicer_to_server(FedT(), server)
+    fedt_servicer = FedT()
+    fedT_pb2_grpc.add_FedTServicer_to_server(fedt_servicer, server)
+
+    fedt_servicer.grpc_server = server
+
     server.add_insecure_port(f"{server_config["IP"]}:{server_config["port"]}")
     server.start()
 
