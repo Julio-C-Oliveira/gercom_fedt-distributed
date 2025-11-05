@@ -110,7 +110,7 @@ def run():
             gc.collect()
 
             self.model = RandomForestRegressor(
-                n_estimators=self.get_number_of_trees_per_client(),
+                n_estimators=trees_by_client,
                 max_depth=3,
                 warm_start=True
             )
