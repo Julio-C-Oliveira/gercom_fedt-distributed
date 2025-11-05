@@ -72,7 +72,7 @@ def run():
     with grpc.insecure_channel(f"{server_ip}:{server_port}") as channel:
         stub = fedT_pb2_grpc.FedTStub(channel)
 
-        dataset = [utils.load_house_client()]
+        dataset = utils.load_house_client()
 
         for round in range(number_of_rounds):
 
