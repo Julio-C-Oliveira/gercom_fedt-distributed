@@ -13,8 +13,6 @@ from fedt import fedT_pb2
 import logging
 import colorlog
 
-PERCENTUAL = 0.65
-
 def set_initial_params(model: RandomForestRegressor, X_train, y_train):
     """
     ### Função:
@@ -134,21 +132,6 @@ def load_server_side_validation_data():
 
     _, data_valid, _, label_valid = train_test_split(data, label, test_size=0.2)
     return data_valid[-1000:], label_valid[-1000:]
-
-def shuffle(data: np.ndarray, label: np.ndarray):
-    """
-    ### Função:
-    Embaralhar os dados alterando a ordem das linhas.
-    ### Args:
-    - Data: As features.
-    - Label: Os targets.
-    ### Returns:
-    - Data: As features embaralhadas.
-    - Label: Os targets embaralhados.
-    """
-    rng = np.random.default_rng()
-    idx = rng.permutation(int(len(data)*PERCENTUAL))
-    return data[idx], label[idx]
 
 def serialise_tree(tree_model) -> bytes:
     """
