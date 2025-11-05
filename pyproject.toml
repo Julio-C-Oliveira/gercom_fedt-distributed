@@ -29,13 +29,13 @@ fedt = "fedt.cli:main"
 packages = ["fedt"]
 
 [paths]
-client_script_path = '/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/new_gRPC/fedt/client.py'
-results_folder = '/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/new_gRPC/results'
-dataset_path = '/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/new_gRPC/energydata_complete.csv'
+client_script_path = '/home/julio/Documentos/gercom_fedt-distributed/fedt/client.py'
+results_folder = '/home/julio/Documentos/gercom_fedt-distributed/results'
+dataset_path = '/home/julio/Documentos/gercom_fedt-distributed/energydata_complete.csv'
 
 [settings]
-number_of_jobs = 12
-number_of_clients = 5
+number_of_jobs = 2
+number_of_clients = 2
 number_of_rounds = 40
 aggregation_strategy = "random"
 
@@ -44,7 +44,7 @@ timeout = 360
 debug = true
 
 [settings.server]
-IP = "10.126.1.109"
+IP = "0.0.0.0"
 port = "50051"
 pearson_threshold = 0.3 # 0.34
 number_of_trees_in_start = 10

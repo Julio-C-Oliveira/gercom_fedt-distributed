@@ -1,7 +1,7 @@
 import tomllib
 from pathlib import Path
 
-pyproject_path = "/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/new_gRPC/pyproject.toml"
+pyproject_path = "/home/julio/Documentos/gercom_fedt-distributed/pyproject.toml"
 
 with open(pyproject_path, "rb") as file:
     config = tomllib.load(file)
