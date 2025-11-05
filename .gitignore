@@ -1,7 +1,15 @@
+# Arquivos de build
 build.zip
 build/
 fedt/__pycache__/
 fedt.egg-info/
+
+# Dataset
 energydata_complete.csv
+
+# Resultados
 results/
+
+# Arquivos de log
 *.log
+monitor_log.json
