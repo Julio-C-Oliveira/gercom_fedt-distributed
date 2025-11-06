@@ -81,3 +81,6 @@ class HouseClient():
         # self.capture_predictions(self.y_test, self.local_model.predict(self.X_test))
 
         return absolute_error, squared_error, (pearson_corr, p_value), self.trees
+
+    def evaluate_inference_time(self, number_of_samples):
+        self.local_model.predict(self.X_test[-number_of_samples:])

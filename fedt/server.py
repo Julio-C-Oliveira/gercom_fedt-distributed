@@ -20,6 +20,10 @@ import logging
 import gc # pra controlar diretamente o garbage collector do python.
 
 ##########################################################################
+# To-DO:
+# - Tempo agregação
+
+##########################################################################
 # Configuração de logging:
 ##########################################################################
 log_level = logging.DEBUG if server_config["debug"] else logging.INFO

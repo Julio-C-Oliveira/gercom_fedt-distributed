@@ -21,8 +21,9 @@ import gc # pra controlar diretamente o garbage collector do python.
 
 ##########################################################################
 # To-DO:
-# - Avaliar cada alteração de economia de memória implementada.
-# - Retirar a fase de carregar o dataset do loop.
+# [x] Tempo de treinamento das árvores.
+# [x] Tempo de avaliação do modelo, global vs local.
+# [x] Tempo de duração de um round.
 
 ##########################################################################
 # Argumentos e configuração de logging:
@@ -65,6 +66,9 @@ def send_stream_trees(serialise_trees:bytes, client_ID:int):
         message.serialised_tree = tree
         yield message 
 
+def format_time(timestamp):
+    return time.strftime('%H:%M:%S', time.gmtime(timestamp))
+
 ##########################################################################
 # Client:
 ##########################################################################
@@ -76,13 +80,17 @@ def run():
 
         for round in range(number_of_rounds):
 
+            round_start_time = time.time()
+
+            logger.warning(f"Round: {round}")
+
             request_settings = fedT_pb2.Request_Server()
             request_settings.client_ID = ID
             server_reply_settings = stub.get_server_settings(request_settings)
             trees_by_client = server_reply_settings.trees_by_client
             server_round = getattr(server_reply_settings, "current_round", None)
 
-            logger.warning(f"Trees by client: {trees_by_client}, round: {round}")
+            logger.debug(f"Trees by client: {trees_by_client}.")
 
             wait_start = time.time()
             while server_round is not None and server_round < round:
@@ -118,7 +126,10 @@ def run():
             server_model.fit(dataset[0], dataset[1])
             server_model.estimators_ = server_trees_deserialise
 
+            fit_start_time = time.time()
             client = HouseClient(trees_by_client, dataset, ID)
+            fit_time = time.time() - fit_start_time
+            
             (absolute_error, squared_error, (pearson_corr, p_value), best_trees) = client.evaluate(server_model)
 
             logger.info(f"\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
@@ -142,14 +153,26 @@ def run():
 
             server_trees_deserialised = utils.deserialise_several_trees(server_trees_serialised)
             server_model.estimators_ = server_trees_deserialised
+
+            evaluate_start_time = time.time()
             (absolute_error, squared_error, (pearson_corr, p_value), best_trees) = client.evaluate(server_model)
+            evaluate_time = time.time() - evaluate_start_time
 
             logger.info(f"\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
+
+            round_time = time.time() - round_start_time
+
+            # Teste de inferência com apenas 100 amostras
+            start_inference_time = time.time()
+            client.evaluate_inference_time(100)
+            inference_time = time.time() - start_inference_time
+
+            logger.debug(f"\nDuração do Round: {format_time(round_time)}\nTempo de treinamento: {format_time(fit_time)}\nTempo de avaliação: {format_time(evaluate_time)}\nTempo de inferência: {format_time(inference_time)}")
 
             # [New]: Excluindo as árvores serializadas e resetando o cliente:
             del server_model, client, server_trees_serialised, server_trees_deserialised
             gc.collect()
-
+            
             time.sleep(15)
 
 
