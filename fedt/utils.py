@@ -15,6 +15,8 @@ import colorlog
 
 import time
 
+import joblib, io
+
 def set_initial_params(model: RandomForestRegressor, X_train, y_train):
     """
     ### Função:
