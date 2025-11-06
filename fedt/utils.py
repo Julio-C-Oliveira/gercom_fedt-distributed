@@ -238,3 +238,6 @@ def setup_logger(name, log_file, level=logging.INFO):
 
 def format_time(timestamp):
     return time.strftime('%H:%M:%S', time.gmtime(timestamp))
+
+def get_serialised_size_bytes(serialised) -> int:
+    return len(serialised)
