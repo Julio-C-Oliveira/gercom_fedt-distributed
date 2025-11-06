@@ -207,9 +207,9 @@ class FedT(fedT_pb2_grpc.FedTServicer):
                 logger.info("Todos os clientes finalizaram.")
 
                 for i in self.runtime_clients:
-                    logger.debug(f"Client ID: {i[0]} → tempo de execução: {time.strftime('%H:%M:%S', time.gmtime(i[1][1] - i[1][0]))}")
+                    logger.debug(f"Client ID: {i[0]} → tempo de execução: {utils.format_time(i[1][1] - i[1][0])}")
 
-                logger.info(f"Tempo de Execução Médio: {time.strftime('%H:%M:%S', time.gmtime(average_runtime(self.runtime_clients)))}")
+                logger.info(f"Tempo de Execução Médio: {utils.format_time(average_runtime(self.runtime_clients))}")
                 time.sleep(5)
                 self.reset_server()
 

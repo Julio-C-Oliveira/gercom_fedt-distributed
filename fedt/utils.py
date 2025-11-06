@@ -235,3 +235,6 @@ def setup_logger(name, log_file, level=logging.INFO):
     logger.addHandler(file_handler)
 
     return logger
+
+def format_time(timestamp):
+    return time.strftime('%H:%M:%S', time.gmtime(timestamp))

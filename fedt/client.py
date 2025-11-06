@@ -9,7 +9,9 @@ import tempfile
 
 from sklearn.ensemble import RandomForestRegressor
 from client_utils import HouseClient, send_stream_trees
+
 from fedt import utils
+from fedt.utils import format_time
 
 import time
 
@@ -45,13 +47,6 @@ logger = utils.setup_logger(
     log_file=f"fedt_client_{ID}.log",
     level=log_level
 )
-
-##########################################################################
-# Funções auxiliares:
-##############################
-
-def format_time(timestamp):
-    return time.strftime('%H:%M:%S', time.gmtime(timestamp))
 
 ##########################################################################
 # Client:
