@@ -142,7 +142,7 @@ def serialise_tree(tree_model) -> bytes:
     ### Returns:
     - Serialised Tree Model: Modelo de árvore convertido em bytes.
     """
-    return pickle.dumps(tree_model)
+    return pickle.dumps(tree_model, protocol=pickle.HIGHEST_PROTOCOL)
 
 def deserialise_tree(serialised_tree_model):
     """
