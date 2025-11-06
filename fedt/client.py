@@ -8,8 +8,8 @@ import pickle
 import tempfile
 
 from sklearn.ensemble import RandomForestRegressor
-from client_utils import HouseClient
-import utils
+from client_utils import HouseClient, send_stream_trees
+from fedt import utils
 
 import time
 
@@ -48,23 +48,7 @@ logger = utils.setup_logger(
 
 ##########################################################################
 # Funções auxiliares:
-##########################################################################
-def send_stream_trees(serialise_trees:bytes, client_ID:int):
-    """
-    ### Função:
-    Enviar as árvores para o servidor de forma isolada por stream,
-    enviar todas as árvores só de uma vez ocasiona vários erros devido ao tamanho do modelo.
-    ### Args:
-    - Serialise Trees: Lista de árvores em formato de bytes.
-    - Client ID: O Identificador do cliente.
-    ### Returns:
-    - Message: Um objeto que contém a árvore e o ID do cliente.
-    """
-    message = fedT_pb2.Forest_CLient()
-    message.client_ID = client_ID
-    for tree in serialise_trees:
-        message.serialised_tree = tree
-        yield message 
+##############################
 
 def format_time(timestamp):
     return time.strftime('%H:%M:%S', time.gmtime(timestamp))

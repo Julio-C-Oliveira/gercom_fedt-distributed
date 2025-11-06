@@ -56,3 +56,20 @@ class HouseClient():
 
     def evaluate_inference_time(self, number_of_samples):
         self.local_model.predict(self.X_test[-number_of_samples:])
+
+def send_stream_trees(serialise_trees:bytes, client_ID:int):
+    """
+    ### Função:
+    Enviar as árvores para o servidor de forma isolada por stream,
+    enviar todas as árvores só de uma vez ocasiona vários erros devido ao tamanho do modelo.
+    ### Args:
+    - Serialise Trees: Lista de árvores em formato de bytes.
+    - Client ID: O Identificador do cliente.
+    ### Returns:
+    - Message: Um objeto que contém a árvore e o ID do cliente.
+    """
+    message = fedT_pb2.Forest_CLient()
+    message.client_ID = client_ID
+    for tree in serialise_trees:
+        message.serialised_tree = tree
+        yield message 
