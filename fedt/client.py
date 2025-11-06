@@ -130,7 +130,7 @@ def run():
             
             (absolute_error, squared_error, (pearson_corr, p_value), best_trees) = client.evaluate(server_model)
 
-            logger.info(f"\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
+            logger.info(f"\nModelo Inicial:\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
 
             serialise_trees = utils.serialise_several_trees(client.trees)
             client_serialise_trees_size = utils.get_size_of_many_serialised_models(serialise_trees)
@@ -161,7 +161,7 @@ def run():
             (absolute_error, squared_error, (pearson_corr, p_value), best_trees) = client.evaluate(server_model)
             evaluate_time = time.time() - evaluate_start_time
 
-            logger.info(f"\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
+            logger.info(f"\nModelo Final:\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
 
             round_time = time.time() - round_start_time
 

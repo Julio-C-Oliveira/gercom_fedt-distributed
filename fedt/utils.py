@@ -245,9 +245,4 @@ def get_serialised_size_bytes(serialised) -> int:
     return len(serialised)
 
 def get_size_of_many_serialised_models(serialised_models):
-    total = 0
-
-    for model in serialised_models:
-        total += len(model)
-        
-    return total
+    return sum(len(model) for model in serialised_models)
