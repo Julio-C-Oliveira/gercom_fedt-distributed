@@ -4,9 +4,6 @@ build/
 fedt/__pycache__/
 fedt.egg-info/
 
-# Dataset
-energydata_complete.csv
-
 # Resultados
 results/*.json
 
