@@ -3,7 +3,6 @@ from fedt.settings import results_folder
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 
-# Métricas de erro
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
 from scipy.stats import pearsonr
@@ -14,8 +13,6 @@ import warnings
 from scipy.stats import ConstantInputWarning
 
 warnings.filterwarnings("ignore", category=ConstantInputWarning)
-
-NUMBER_OF_PARTITIONS = 4
 
 class HouseClient():
 
@@ -31,29 +28,6 @@ class HouseClient():
 
     def get_global_parameters(self, global_model: RandomForestRegressor):
             return utils.get_model_parameters(global_model)
-
-    # 
-    def capture_predictions(self, real_value, prediction_value):
-        num_pred = len(prediction_value)
-        csv = f"Real_Value,Predction_Value, {num_pred}\n"
-
-        real_value = np.array(real_value)
-
-        for i in range(num_pred):
-            # [real value[i], predction[i]]
-            csv += f"[{real_value[i]},{prediction_value[i]}],"
-        
-        def importar_parametros_de_teste():
-            with open("/home/juliocoliveira/Julio/Gercom/FedT_Distribuido/gRPC/FedT - Distribuido/parametros_de_teste.txt", "r") as f:
-                file = f.read()
-            file = file.split("\n")
-            print(f"Strategy: {file[0]}\nRound: {file[1]}")
-            return file
-        
-        parametros = importar_parametros_de_teste()
-
-        with open(f"{results_folder }/client_{self.ID}_{parametros[0]}_{parametros[1]}.csv", "w") as f:
-            f.write(csv)
 
     def evaluate(self, global_model: RandomForestRegressor):
         global_model_trees = self.get_global_parameters(global_model)
@@ -77,8 +51,6 @@ class HouseClient():
              pearson_corr, p_value = global_model_pearson_corr, global_model_p_value
              self.trees = global_model_trees
              utils.set_model_params(self.local_model, self.trees)
-
-        # self.capture_predictions(self.y_test, self.local_model.predict(self.X_test))
 
         return absolute_error, squared_error, (pearson_corr, p_value), self.trees
 
