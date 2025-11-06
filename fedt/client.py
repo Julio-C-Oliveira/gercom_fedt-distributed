@@ -1,4 +1,4 @@
-from fedt.settings import server_ip, server_port, number_of_rounds, client_timeout, client_debug, results_folder
+from fedt.settings import server_ip, server_port, number_of_rounds, client_timeout, client_debug, results_folder, aggregation_strategy
 
 import grpc
 from fedt import fedT_pb2

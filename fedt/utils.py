@@ -169,7 +169,6 @@ def serialise_several_trees(tree_models):
         serialised_trees.append(buffer.getvalue())
     return serialised_trees
 
-
 def deserialise_several_trees(serialised_tree_models):
     """
     ### Função:
@@ -184,7 +183,7 @@ def deserialise_several_trees(serialised_tree_models):
         buffer = io.BytesIO(serialised_tree)
         deserialised_trees.append(joblib.load(buffer))
     return deserialised_trees
-    
+
 def setup_logger(name, log_file, level=logging.INFO):
     """Cria logger colorido que também grava em arquivo."""
     logger = logging.getLogger(name)
