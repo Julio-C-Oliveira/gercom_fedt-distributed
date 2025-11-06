@@ -8,7 +8,7 @@ fedt.egg-info/
 energydata_complete.csv
 
 # Resultados
-results/
+results/*.json
 
 # Arquivos de log
 *.log
