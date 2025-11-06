@@ -74,7 +74,7 @@ def send_stream_trees(serialise_trees:bytes, client_ID:int):
 # Client:
 ##########################################################################
 def run():
-    base_file_name = f"{aggregation_strategy}_{ID}"
+    base_file_name = f"{aggregation_strategy}_Client-ID-{ID}"
 
     existing_files = [
         file for file in os.listdir(results_folder)
@@ -183,7 +183,8 @@ def run():
 
             logger.info(f"\nModelo Final:\nAbsolute Error: {absolute_error:.3f}\nSquared Error: {squared_error:.3f}\nPearson: {pearson_corr:.3f}")
 
-            round_time = time.time() - round_start_time
+            round_end_time = time.time()
+            round_time = round_end_time - round_start_time
 
             # Teste de inferência com apenas 100 amostras
             start_inference_time = time.time()
@@ -194,6 +195,33 @@ def run():
 
             # [New]: Excluindo as árvores serializadas e resetando o cliente:
             del server_model, client, server_trees_serialised, server_trees_deserialised
+
+            metrics = {
+                "trees_by_client": trees_by_client,
+                "first_server_serialise_trees_size": first_server_serialise_trees_size,
+                "fit_time": fit_time,
+                "client_serialise_trees_size": client_serialise_trees_size,
+                "final_server_serialise_trees_size": final_server_serialise_trees_size,
+                "squared_error": squared_error,
+                "pearson_corr": pearson_corr,
+                "round_time": round_time,
+                "round_start_time": round_start_time,
+                "round_end_time": round_end_time,
+                "evaluate_time": evaluate_time,
+                "inference_time": inference_time
+            }
+
+            if result_file_path.exists():
+                with open(result_file_path, "r", encoding="utf-8") as file:
+                    data = json.load(file)
+            else:
+                data = {}
+
+            data[server_round] = metrics
+
+            with open(result_file_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
+
             gc.collect()
             
             time.sleep(15)
