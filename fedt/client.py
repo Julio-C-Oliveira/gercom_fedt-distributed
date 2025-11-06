@@ -109,6 +109,9 @@ def run():
             for server_reply in server_replies:
                 server_trees_serialised.append(server_reply.serialised_tree)
 
+            first_server_serialise_trees_size = utils.get_size_of_many_serialised_models(server_trees_serialised)
+            logger.debug(f"Final Server Model in MB: {first_server_serialise_trees_size/(1024**2)}")
+
             server_trees_deserialise = utils.deserialise_several_trees(server_trees_serialised)
 
             # [New]: Removendo as árvores serializadas.
@@ -134,7 +137,7 @@ def run():
 
             serialise_trees = utils.serialise_several_trees(client.trees)
             client_serialise_trees_size = utils.get_size_of_many_serialised_models(serialise_trees)
-            logger.debug(f"Serialise Model Size Local Model in MB: {client_serialise_trees_size/(1024**2)}")
+            logger.debug(f"Local Model in MB: {client_serialise_trees_size/(1024**2)}")
 
             server_replies = stub.aggregate_trees(send_stream_trees(serialise_trees, ID))
             server_trees_serialised = []
@@ -154,8 +157,8 @@ def run():
             server_trees_deserialised = utils.deserialise_several_trees(server_trees_serialised)
             server_model.estimators_ = server_trees_deserialised
 
-            server_serialise_trees_size = utils.get_size_of_many_serialised_models(server_trees_serialised)
-            logger.debug(f"Serialise Model Size Server Model in MB: {server_serialise_trees_size/(1024**2)}")
+            final_server_serialise_trees_size = utils.get_size_of_many_serialised_models(server_trees_serialised)
+            logger.debug(f"Final Server Model in MB: {final_server_serialise_trees_size/(1024**2)}")
 
             evaluate_start_time = time.time()
             (absolute_error, squared_error, (pearson_corr, p_value), best_trees) = client.evaluate(server_model)
