@@ -138,60 +138,53 @@ def load_server_side_validation_data():
 def serialise_tree(tree_model) -> bytes:
     """
     ### Função:
-    Converter o modelo de árvore de objeto para bytes.
-    ### Args:
-    - Tree Model: Modelo de árvore.
-    ### Returns:
-    - Serialised Tree Model: Modelo de árvore convertido em bytes.
+    Serializa um modelo de árvore usando joblib com compressão leve.
+    Retorna os bytes resultantes.
     """
-    return pickle.dumps(tree_model, protocol=pickle.HIGHEST_PROTOCOL)
+    buffer = io.BytesIO()
+    joblib.dump(tree_model, buffer, compress=3)  # compress=3 → bom equilíbrio entre tamanho e CPU
+    return buffer.getvalue()
 
 def deserialise_tree(serialised_tree_model):
     """
     ### Função:
-    Converter um modelo de árvore em bytes para um modelo em formato de objeto.
-    ### Args:
-    - Serialised Tree Model: Modelo de árvore em bytes.
-    ### Returns:
-    - Deserialised Tree Model: Modelo de árvore em formato de objeto.
+    Desserializa um modelo de árvore (em bytes) para um objeto Python.
     """
-    with tempfile.TemporaryFile(mode='w+b') as temp_file:
-        temp_file.write(serialised_tree_model)
-        temp_file.seek(0)
-        tree_deserialised_model = pickle.load(temp_file)
-    return tree_deserialised_model
+    buffer = io.BytesIO(serialised_tree_model)
+    return joblib.load(buffer)
 
 def serialise_several_trees(tree_models):
     """
     ### Função:
     Converter vários modelos de árvore de objeto para bytes.
     ### Args:
-    - Tree Models: Lista com vários modelos de árvore.
+    - tree_models: Lista com vários modelos de árvore.
     ### Returns:
-    - Serialised Tree Models: Lista de modelos de árvore convertido em bytes.
+    - serialised_trees: Lista de modelos de árvore convertidos em bytes.
     """
     serialised_trees = []
     for tree in tree_models:
-        serialised_trees.append(serialise_tree(tree))
+        buffer = io.BytesIO()
+        joblib.dump(tree, buffer, compress=3)  # compress=3 → equilíbrio entre tamanho e CPU
+        serialised_trees.append(buffer.getvalue())
     return serialised_trees
+
 
 def deserialise_several_trees(serialised_tree_models):
     """
     ### Função:
     Converter vários modelos de árvore em bytes para modelos em formato de objeto.
     ### Args:
-    - Serialised Tree Models: Lista com vários modelos de árvore em bytes.
+    - serialised_tree_models: Lista com vários modelos de árvore em bytes.
     ### Returns:
-    - Deserialised Tree Model: Lista com vários modelos de árvore em formato de objeto.
+    - deserialised_trees: Lista com vários modelos de árvore em formato de objeto.
     """
     deserialised_trees = []
     for serialised_tree in serialised_tree_models:
-        with tempfile.TemporaryFile(mode='w+b') as temp_file:
-            temp_file.write(serialised_tree)
-            temp_file.seek(0)
-            deserialised_trees.append(pickle.load(temp_file))
+        buffer = io.BytesIO(serialised_tree)
+        deserialised_trees.append(joblib.load(buffer))
     return deserialised_trees
-
+    
 def setup_logger(name, log_file, level=logging.INFO):
     """Cria logger colorido que também grava em arquivo."""
     logger = logging.getLogger(name)
