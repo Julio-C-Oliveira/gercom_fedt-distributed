@@ -13,6 +13,8 @@ from fedt import fedT_pb2
 import logging
 import colorlog
 
+import time
+
 def set_initial_params(model: RandomForestRegressor, X_train, y_train):
     """
     ### Função:
