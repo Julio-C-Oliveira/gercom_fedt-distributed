@@ -21,6 +21,9 @@ import logging
 
 import gc # pra controlar diretamente o garbage collector do python.
 
+import os, json
+from pathlib import Path
+
 ##########################################################################
 # To-DO:
 # [x] Tempo de treinamento das árvores.
@@ -71,6 +74,20 @@ def send_stream_trees(serialise_trees:bytes, client_ID:int):
 # Client:
 ##########################################################################
 def run():
+    base_file_name = f"{aggregation_strategy}_{ID}"
+
+    existing_files = [
+        file for file in os.listdir(results_folder)
+        if file.startswith(base_file_name) and f.endswith(".json")
+    ]
+
+    next_file_index = len(existing_files) + 1
+
+    result_file_name = f"{base_file_name}_{next_file_index}.json"
+    result_file_path = (results_folder / result_file_name).resolve()
+
+    logger.warning(f"Result path: {result_file_path}")
+
     with grpc.insecure_channel(f"{server_ip}:{server_port}") as channel:
         stub = fedT_pb2_grpc.FedTStub(channel)
 
