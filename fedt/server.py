@@ -161,8 +161,11 @@ class FedT(fedT_pb2_grpc.FedTServicer):
                 forests = [trees for (_, trees) in self.trees_warehouse]
                 logger.warning(f"\nIniciando agregação do round {self.round}\nAgregação iniciada pelo cliente {client_ID}\nClientes: {len(self.clientes_conectados)}")
                 try:
+                    self.agregation_start_time = time.time() 
                     self.aggregate_strategy(forests)
+                    self.agregation_time = time.time() - self.agregation_start_time
                     logger.info(f"Agregação finalizada para round {self.round}.")
+                    logger.debug(f"Tempo de Agregação: {utils.format_time(self.agregation_time)}")
                 except Exception as e:
                     logger.critical(f"Falha na agregação: {e}")
                 finally:
