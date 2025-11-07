@@ -78,7 +78,7 @@ def run():
 
     existing_files = [
         file for file in os.listdir(results_folder)
-        if file.startswith(base_file_name) and f.endswith(".json")
+        if file.startswith(base_file_name) and file.endswith(".json")
     ]
 
     next_file_index = len(existing_files) + 1
