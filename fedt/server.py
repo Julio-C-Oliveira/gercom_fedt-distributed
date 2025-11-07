@@ -166,11 +166,11 @@ class FedT(fedT_pb2_grpc.FedTServicer):
                 except Exception as e:
                     logger.critical(f"Falha na agregação: {e}")
                 finally:
-                    self.aggregation_realised = 0
+                    self.aggregation_realised = 2
                     self.round_condition.notify_all()
 
             else:
-                while self.aggregation_realised != 0:
+                while self.aggregation_realised != 2:
                     self.round_condition.wait(timeout=5)
 
         serialised_global_trees = utils.serialise_several_trees(self.model.estimators_)
@@ -220,6 +220,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
                     self.shutdown_server()
                     return fedT_pb2.OK(ok=1)
                 else:
+                    self.aggregation_realised = 0
                     logger.warning(f"Round {self.round} iniciado")
 
         answer = fedT_pb2.OK()
