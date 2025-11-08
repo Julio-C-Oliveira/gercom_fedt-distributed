@@ -21,7 +21,7 @@ import gc # pra controlar diretamente o garbage collector do python.
 
 ##########################################################################
 # To-DO:
-# - Tempo agregação
+# - Adicionar o registrador de métricas, ponto inicial no init e final no end_transmission.
 
 ##########################################################################
 # Configuração de logging:
