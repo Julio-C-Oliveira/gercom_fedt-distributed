@@ -5,13 +5,19 @@ import time
 from fedt.server import run_server
 from fedt.run_clients import run_clients
 
+import subprocess
+
 def run_all():
-    """Roda o servidor e os clientes."""
     print("Iniciando servidor...")
-    run_server()
-    time.sleep(5)
+    server_proc = subprocess.Popen(["fedt", "run", "server"])
+
+    time.sleep(3)  
+
     print("Iniciando clientes...")
-    run_clients()
+    clients_proc = subprocess.Popen(["fedt", "run", "clients"])
+
+    server_proc.wait()
+    clients_proc.wait()
 
 def main():
     parser = argparse.ArgumentParser(
