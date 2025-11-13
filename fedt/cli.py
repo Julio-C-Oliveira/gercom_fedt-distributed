@@ -7,7 +7,7 @@ from fedt.run_clients import run_clients
 
 import subprocess
 
-def run_all():
+def run_server_and_clients():
     print("Iniciando servidor...")
     server_proc = subprocess.Popen(["fedt", "run", "server"])
 
@@ -39,7 +39,7 @@ def main():
     run_clients_parser.set_defaults(func=run_clients)
 
     # Define o comportamento padrão de "run" sem subcomando
-    run_parser.set_defaults(func=run_all)
+    run_parser.set_defaults(func=run_server_and_clients)
 
     args = parser.parse_args()
 
