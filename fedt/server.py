@@ -255,7 +255,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
                 else:
                     data = {}
 
-                data[server_round] = self.metrics
+                data[self.round] = self.metrics
 
                 with open(self.result_file_path, "w", encoding="utf-8") as f:
                     json.dump(data, f, indent=4, ensure_ascii=False)
