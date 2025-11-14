@@ -16,7 +16,7 @@ dataset_path = (base_path / config["paths"]["dataset_path"]).resolve()
 number_of_jobs = config["settings"]["number_of_jobs"]
 number_of_clients = config["settings"]["number_of_clients"]
 number_of_rounds = config["settings"]["number_of_rounds"]
-aggregation_strategy = config["settings"]["aggregation_strategy"]
+imported_aggregation_strategy = config["settings"]["aggregation_strategy"]
 
 many_simulations = config["settings"]["sequence"]["many_simulations"]
 number_of_simulations = config["settings"]["sequence"]["number_of_simulations"]

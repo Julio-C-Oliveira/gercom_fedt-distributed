@@ -1,7 +1,7 @@
 from fedt.settings import (
     server_ip, server_port, number_of_rounds, 
     client_timeout, client_debug, 
-    aggregation_strategy, many_simulations
+    imported_aggregation_strategy, many_simulations
     )
 from fedt.utils import create_specific_result_folder
 
@@ -79,6 +79,8 @@ def send_stream_trees(serialise_trees:bytes, client_ID:int):
 # Client:
 ##########################################################################
 def run(input_aggregation_strategy=None):
+    aggregation_strategy = imported_aggregation_strategy
+
     if many_simulations:
         aggregation_strategy = input_aggregation_strategy
 

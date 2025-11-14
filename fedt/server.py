@@ -1,6 +1,6 @@
 from fedt.settings import (
     server_config, number_of_jobs, number_of_clients, 
-    aggregation_strategy, number_of_rounds, many_simulations
+    imported_aggregation_strategy, number_of_rounds, many_simulations
     )
 from fedt.utils import create_specific_result_folder
 
@@ -86,7 +86,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         self.global_trees = self.model.estimators_
         self.strategy = FedForest(self.model)
 
-        self.aggregation_strategy = aggregation_strategy
+        self.aggregation_strategy = imported_aggregation_strategy
 
         if many_simulations:
             self.aggregation_strategy = input_aggregation_strategy
