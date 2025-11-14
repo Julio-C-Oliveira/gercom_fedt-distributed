@@ -1,12 +1,11 @@
 import tomllib
 from pathlib import Path
+import importlib.resources as res
 
-pyproject_path = Path(__file__).resolve().parent.parent / "pyproject.toml"
+with res.files("fedt").joinpath("config.toml").open("rb") as f:
+    config = tomllib.load(f)
 
-with open(pyproject_path, "rb") as file:
-    config = tomllib.load(file)
-
-base_path = (pyproject_path.parent / config["paths"]["base_path"]).resolve()
+base_path = Path(__file__).resolve().parent
 
 results_folder = (base_path / config["paths"]["results_folder"]).resolve()
 logs_folder = (base_path / config["paths"]["logs_folder"]).resolve()
