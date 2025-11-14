@@ -1,4 +1,8 @@
-from fedt.settings import server_config, number_of_jobs, number_of_clients, aggregation_strategy, number_of_rounds
+from fedt.settings import (
+    server_config, number_of_jobs, number_of_clients, 
+    aggregation_strategy, number_of_rounds, many_simulations, 
+    create_specific_result_folder
+    )
 
 from concurrent import futures
 import threading
@@ -63,7 +67,7 @@ def average_runtime(runtime_clients):
 ##########################################################################
 
 class FedT(fedT_pb2_grpc.FedTServicer):
-    def __init__(self) -> None:
+    def __init__(self, input_aggregation_strategy) -> None:
         super().__init__()
         self.round = 0
 
@@ -81,6 +85,13 @@ class FedT(fedT_pb2_grpc.FedTServicer):
 
         self.global_trees = self.model.estimators_
         self.strategy = FedForest(self.model)
+
+        self.aggregation_strategy = aggregation_strategy
+
+        if many_simulations:
+            self.aggregation_strategy = input_aggregation_strategy
+
+        self.results_folder = create_specific_result_folder(self.aggregation_strategy, "server")
 
         # Variaveis de sincronização:
         self.lock = threading.Lock()
@@ -101,7 +112,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         return self.round * server_config["increase_of_trees_per_round"] + server_config["number_of_trees_in_start"]
 
     def aggregate_strategy(self, best_forests: list[RandomForestRegressor], threshold=server_config["pearson_threshold"]):
-        match aggregation_strategy:
+        match self.aggregation_strategy:
             case 'random':
                 self.model.estimators_ = self.strategy.aggregate_fit_random_trees_strategy(best_forests)
             case 'best_trees':
@@ -306,11 +317,11 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         self.runtime_clients = []
         self.runtime_average = 0
     
-def run_server():
+def run_server(input_aggregation_strategy=None):
     logger.info("Servidor inicializando...")
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=number_of_jobs))
-    fedt_servicer = FedT()
+    fedt_servicer = FedT(input_aggregation_strategy)
     fedT_pb2_grpc.add_FedTServicer_to_server(fedt_servicer, server)
 
     fedt_servicer.grpc_server = server

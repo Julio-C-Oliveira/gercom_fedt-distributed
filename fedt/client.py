@@ -1,4 +1,9 @@
-from fedt.settings import server_ip, server_port, number_of_rounds, client_timeout, client_debug, results_folder, aggregation_strategy
+from fedt.settings import (
+    server_ip, server_port, number_of_rounds, 
+    client_timeout, client_debug, 
+    aggregation_strategy, many_simulations,
+    create_specific_result_folder
+    )
 
 import grpc
 from fedt import fedT_pb2
@@ -73,8 +78,13 @@ def send_stream_trees(serialise_trees:bytes, client_ID:int):
 ##########################################################################
 # Client:
 ##########################################################################
-def run():
-    base_file_name = f"{aggregation_strategy}_Client-ID-{ID}"
+def run(input_aggregation_strategy=None):
+    if many_simulations:
+        aggregation_strategy = input_aggregation_strategy
+
+    base_file_name = f"{aggregation_strategy}_client-id-{ID}"
+
+    results_folder = create_specific_result_folder(aggregation_strategy, f"client-id-{ID}") 
 
     existing_files = [
         file for file in os.listdir(results_folder)

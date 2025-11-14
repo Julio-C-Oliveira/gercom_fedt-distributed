@@ -42,6 +42,11 @@ number_of_clients = 20
 number_of_rounds = 40
 aggregation_strategy = "random"
 
+[settings.sequence]
+many_simulations = false
+number_of_simulations = 10
+aggregation_strategies = ['random', 'best_trees', 'threshold', 'best_forests']
+
 [settings.client]
 timeout = 360
 debug = true

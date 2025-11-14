@@ -18,6 +18,10 @@ number_of_clients = config["settings"]["number_of_clients"]
 number_of_rounds = config["settings"]["number_of_rounds"]
 aggregation_strategy = config["settings"]["aggregation_strategy"]
 
+many_simulations = config["settings"]["sequence"]["many_simulations"]
+number_of_simulations = config["settings"]["sequence"]["number_of_simulations"]
+aggregation_strategies = config["settings"]["sequence"]["aggregation_strategies"]
+
 client_timeout = config["settings"]["client"]["timeout"]
 client_debug = config["settings"]["client"]["debug"]
 

@@ -1,4 +1,4 @@
-from fedt.settings import dataset_path, percentage_value_of_samples_per_client, validate_dataset_size
+from fedt.settings import dataset_path, percentage_value_of_samples_per_client, validate_dataset_size, aggregation_strategies, results_folder
 
 import numpy as np
 import pandas as pd
@@ -16,6 +16,8 @@ import colorlog
 import time
 
 import joblib, io
+
+from pathlib import Path
 
 def set_initial_params(model: RandomForestRegressor, X_train, y_train):
     """
@@ -240,3 +242,17 @@ def get_serialised_size_bytes(serialised) -> int:
 
 def get_size_of_many_serialised_models(serialised_models):
     return sum(len(model) for model in serialised_models)
+
+def create_strategies_result_folder():
+    for strategy in aggregation_strategies:
+        subpath = results_folder / strategy
+        subpath.mkdir(parents=True, exist_ok=True)
+
+def create_specific_result_folder(strategy, base_name):
+    subpath = results_folder / strategy / base_name
+    subpath.mkdir(parents=True, exist_ok=True)
+    return subpath
+
+
+if __name__ == "__main__":
+    create_specific_result_folder("Client")
