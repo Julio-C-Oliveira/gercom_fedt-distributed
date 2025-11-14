@@ -192,9 +192,9 @@ class FedT(fedT_pb2_grpc.FedTServicer):
                 try:
                     self.agregation_start_time = time.time() 
                     self.aggregate_strategy(forests)
-                    self.agregation_time = time.time() - self.agregation_start_time
+                    self.aggregation_time = time.time() - self.agregation_start_time
                     logger.info(f"Agregação finalizada para round {self.round}.")
-                    logger.debug(f"Tempo de Agregação: {utils.format_time(self.agregation_time)}")
+                    logger.debug(f"Tempo de Agregação: {utils.format_time(self.aggregation_time)}")
                 except Exception as e:
                     logger.critical(f"Falha na agregação: {e}")
                 finally:
@@ -242,6 +242,24 @@ class FedT(fedT_pb2_grpc.FedTServicer):
                     logger.debug(f"Client ID: {i[0]} → tempo de execução: {utils.format_time(i[1][1] - i[1][0])}")
 
                 logger.info(f"Tempo de Execução Médio: {utils.format_time(average_runtime(self.runtime_clients))}")
+
+                self.metrics = {
+                    "trees_by_client": self.get_number_of_trees_per_client(),
+                    "aggregation_time": self.aggregation_time,
+                    "avg_execution_time": average_runtime(self.runtime_clients)
+                }
+
+                if self.result_file_path.exists():
+                    with open(self.result_file_path, "r", encoding="utf-8") as file:
+                        data = json.load(file)
+                else:
+                    data = {}
+
+                data[server_round] = metrics
+
+                with open(self.result_file_path, "w", encoding="utf-8") as f:
+                    json.dump(data, f, indent=4, ensure_ascii=False)
+
                 time.sleep(5)
                 self.reset_server()
 
