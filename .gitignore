@@ -5,7 +5,7 @@ fedt/__pycache__/
 fedt.egg-info/
 
 # Resultados
-results/*.json
+results/*/
 
 # Arquivos de log
 *.log
