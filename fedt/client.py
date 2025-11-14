@@ -1,9 +1,9 @@
 from fedt.settings import (
     server_ip, server_port, number_of_rounds, 
     client_timeout, client_debug, 
-    aggregation_strategy, many_simulations,
-    create_specific_result_folder
+    aggregation_strategy, many_simulations
     )
+from fedt.utils import create_specific_result_folder
 
 import grpc
 from fedt import fedT_pb2

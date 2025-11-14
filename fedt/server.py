@@ -1,8 +1,8 @@
 from fedt.settings import (
     server_config, number_of_jobs, number_of_clients, 
-    aggregation_strategy, number_of_rounds, many_simulations, 
-    create_specific_result_folder
+    aggregation_strategy, number_of_rounds, many_simulations
     )
+from fedt.utils import create_specific_result_folder
 
 from concurrent import futures
 import threading
