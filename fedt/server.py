@@ -23,6 +23,8 @@ import logging
 
 import gc # pra controlar diretamente o garbage collector do python.
 
+import os, json
+
 ##########################################################################
 # To-DO:
 # - Adicionar o registrador de métricas, ponto inicial no init e final no end_transmission.
@@ -91,7 +93,23 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         if many_simulations:
             self.aggregation_strategy = input_aggregation_strategy
 
+        base_file_name = f"{self.aggregation_strategy}_server"
+
         self.results_folder = create_specific_result_folder(self.aggregation_strategy, "server")
+
+        existing_files = [
+            file for file in os.listdir(self.results_folder)
+            if file.startswith(base_file_name) and file.endswith(".json")
+        ]
+
+        next_file_index = len(existing_files) + 1
+
+        result_file_name = f"{base_file_name}_{next_file_index}.json"
+        self.result_file_path = (self.results_folder / result_file_name).resolve()
+
+        self.metrics = {}
+
+        logger.warning(f"Result path: {self.result_file_path}")
 
         # Variaveis de sincronização:
         self.lock = threading.Lock()
