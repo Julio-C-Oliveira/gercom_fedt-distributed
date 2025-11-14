@@ -6,7 +6,7 @@ with res.files("fedt").joinpath("config.toml").open("rb") as f:
     config = tomllib.load(f)
 
 base_path = ""
-base_path = Path(base_path).resolve().parent
+base_path = Path(base_path).resolve()
 
 results_folder = (base_path / config["paths"]["results_folder"]).resolve()
 logs_folder = (base_path / config["paths"]["logs_folder"]).resolve()
