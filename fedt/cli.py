@@ -61,6 +61,19 @@ def main():
     run_clients_parser = run_subparsers.add_parser("clients", help="Roda os clientes")
     run_clients_parser.set_defaults(func=run_clients)
 
+    # Subcomando: run many-serverr
+    run_many_server_parser = run_subparsers.add_parser(
+        "many-server", help="Roda vários servidores em sequência"
+    )
+    run_many_server_parser.set_defaults(func=run_server_many_times)
+
+    # Subcomando: run many-clients
+    run_many_clients_parser = run_subparsers.add_parser(
+        "many-clients", help="Roda vários clientes em sequência"
+    )
+    run_many_clients_parser.set_defaults(func=run_clients_many_times)
+
+
     # Define o comportamento padrão de "run" sem subcomando
     run_parser.set_defaults(func=run_server_and_clients)
 
