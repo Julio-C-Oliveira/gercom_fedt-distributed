@@ -20,7 +20,7 @@ def run_server_many_times():
             time.sleep(10)
 
 def run_clients_many_times():
-    for _ in aggregation_strategies:
+    for strategy in aggregation_strategies:
         for i in range(number_of_simulations):
             print(f"Iniciando os clientes... Simulação: {i}")
 
