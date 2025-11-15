@@ -45,6 +45,12 @@ parse.add_argument(
     type=int,
     help="Client ID"
 )
+parse.add_argument(
+    "--strategy",
+    type=str,
+    default=None,
+    help="Nome da estratégia (opcional)"
+)
 
 ID = parse.parse_args().client_id
 
@@ -55,6 +61,11 @@ logger = utils.setup_logger(
     log_file=f"fedt_client_{ID}.log",
     level=log_level
 )
+
+aggregation_strategy = imported_aggregation_strategy
+
+if many_simulations:
+    aggregation_strategy = parse.parse_args().strategy
 
 ##########################################################################
 # Funções auxiliares:
@@ -78,12 +89,7 @@ def send_stream_trees(serialise_trees:bytes, client_ID:int):
 ##########################################################################
 # Client:
 ##########################################################################
-def run(input_aggregation_strategy=None):
-    aggregation_strategy = imported_aggregation_strategy
-
-    if many_simulations:
-        aggregation_strategy = input_aggregation_strategy
-
+def run():
     base_file_name = f"{aggregation_strategy}_client-id-{ID}"
 
     results_folder = create_specific_result_folder(aggregation_strategy, f"client-id-{ID}") 

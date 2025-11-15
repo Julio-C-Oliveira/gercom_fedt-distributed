@@ -3,9 +3,32 @@ import argparse
 import time
 
 from fedt.server import run_server
-from fedt.run_clients import run_clients
+from fedt.run_clients import run_clients, run_clients_with_a_specific_strategy
+
+from fedt.settings import aggregation_strategies, number_of_simulations
 
 import subprocess
+
+def run_server_many_times():
+    for strategy in aggregation_strategies:
+        for i in range(number_of_simulations):
+            print(f"Iniciando o servidor... Simulação: {i}")
+
+            run_server(strategy)
+
+            print("Server finalizado, pausa de 10 segundos...")
+            time.sleep(10)
+
+def run_clients_many_times():
+    for _ in aggregation_strategies:
+        for i in range(number_of_simulations):
+            print(f"Iniciando os clientes... Simulação: {i}")
+
+            run_clients_with_a_specific_strategy(strategy)
+
+            print("Clientes finalizados, pausa de 30 segundos...")
+            time.sleep(30)
+
 
 def run_server_and_clients():
     print("Iniciando servidor...")
