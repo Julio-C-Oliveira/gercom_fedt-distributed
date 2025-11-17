@@ -25,6 +25,11 @@ import gc # pra controlar diretamente o garbage collector do python.
 
 import os, json
 
+import warnings
+from scipy.stats import ConstantInputWarning
+
+warnings.filterwarnings("ignore", category=ConstantInputWarning)
+
 ##########################################################################
 # To-DO:
 # - Adicionar o registrador de métricas, ponto inicial no init e final no end_transmission.
