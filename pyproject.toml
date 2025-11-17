@@ -25,6 +25,11 @@ dependencies = [
 
 [project.scripts]
 fedt = "fedt.cli:main"
+fedt-network = "scripts.network_monitor:main"
+fedt-cpu-ram = "scripts.cpu_and_ram_monitor:main"
 
 [tool.setuptools]
-packages = ["fedt"]
+packages = ["fedt", "scripts"]
+
+[tool.setuptools.package-data]
+fedt = ["config.toml"]

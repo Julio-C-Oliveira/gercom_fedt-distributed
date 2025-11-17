@@ -10,10 +10,14 @@ ip_alvo = server_ip
 porta = server_port
 arquivo_saida = logs_folder / "captura_de_rede.pcap"
 
-subprocess.run([
-    script,
-    interface,
-    ip_alvo,
-    porta,
-    arquivo_saida
-])
+def main():
+    subprocess.run([
+        script,
+        interface,
+        ip_alvo,
+        porta,
+        arquivo_saida
+    ])
+
+if __name__ == "__main__":
+    main()
