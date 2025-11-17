@@ -10,3 +10,6 @@ results/*/
 # Arquivos de log
 *.log
 monitor_log.json
+
+# Arquivos de rede
+*.pcap
