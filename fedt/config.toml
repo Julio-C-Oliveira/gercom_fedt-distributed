@@ -17,7 +17,7 @@ number_of_simulations = 10
 aggregation_strategies = ['random', 'best_trees', 'threshold', 'best_forests']
 
 [settings.client]
-timeout = 360
+timeout = 420
 debug = true
 
 [settings.server]
@@ -28,7 +28,7 @@ number_of_trees_in_start = 10
 increase_of_trees_per_round = 10
 validate_dataset_size = 1000
 print_every_trees_sent = 50
-timeout = 120
+timeout = 360
 debug = true
 
 [dataset]
