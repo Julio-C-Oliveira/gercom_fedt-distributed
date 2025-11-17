@@ -10,6 +10,7 @@ base_path = Path(base_path).resolve()
 
 results_folder = (base_path / config["paths"]["results_folder"]).resolve()
 logs_folder = (base_path / config["paths"]["logs_folder"]).resolve()
+scripts_folder = (base_path / config["paths"]["scripts_path"]).resolve()
 client_script_path = (base_path / config["paths"]["client_script_path"]).resolve()
 dataset_path = (base_path / config["paths"]["dataset_path"]).resolve()
 
@@ -32,3 +33,5 @@ validate_dataset_size = config["settings"]["server"]["validate_dataset_size"]
 
 train_test_split_size = config["dataset"]["train_test_split_size"]
 percentage_value_of_samples_per_client = config["dataset"]["percentage_value_of_samples_per_client"]
+
+network_interface = config["scripts"]["network_interface"]

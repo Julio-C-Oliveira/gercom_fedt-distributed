@@ -2,6 +2,7 @@
 base_path = '.'
 results_folder = 'results'
 logs_folder = 'logs'
+scripts_path = 'scripts'
 client_script_path = 'fedt/client.py'
 dataset_path = 'energydata_complete.csv'
 
@@ -34,3 +35,6 @@ debug = true
 [dataset]
 train_test_split_size = 0.25
 percentage_value_of_samples_per_client = 20
+
+[scripts]
+network_interface = "eth0"

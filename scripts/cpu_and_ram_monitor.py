@@ -3,9 +3,11 @@ import time
 import json
 from fedt.settings import logs_folder
 
+from pathlib import Path
+
 # Lista de padrões a monitorar
 TARGET_STRINGS = ["--client-id", "fedt run server"]
-LOG_FILE = f"{logs_folder}/cpu_and_ram_monitor_log.json"
+LOG_FILE = logs_folder / "cpu_and_ram_monitor_log.json"
 CHECK_INTERVAL = 0.5
 SAVE_INTERVAL = 20
 
