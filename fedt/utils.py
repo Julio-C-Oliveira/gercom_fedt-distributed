@@ -258,6 +258,11 @@ def create_specific_result_folder(strategy, base_name):
     subpath.mkdir(parents=True, exist_ok=True)
     return subpath
 
+def create_specific_logs_folder(strategy, base_name):
+    subpath = logs_folder / base_name / strategy
+    subpath.mkdir(parents=True, exist_ok=True)
+    return subpath
+
 
 if __name__ == "__main__":
     create_specific_result_folder("Client")
