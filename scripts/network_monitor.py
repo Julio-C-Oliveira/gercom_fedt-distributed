@@ -7,6 +7,8 @@ from pathlib import Path
 
 import argparse
 
+import logging
+
 parse = argparse.ArgumentParser(description="Script para monitorar o consumo de ram e cpu.")
 parse.add_argument(
     "--strategy",
@@ -36,7 +38,7 @@ script = scripts_folder / "network_monitor"
 interface = network_interface
 ip_alvo = server_ip
 porta = server_port
-arquivo_saida = logs_folder / f"captura_de_rede_{strategy}_{sim_number}.pcap"
+arquivo_saida = logs_folder / f"captura_de_rede_{strategy}_{simulation_number}.pcap"
 
 def main():
     subprocess.run([
