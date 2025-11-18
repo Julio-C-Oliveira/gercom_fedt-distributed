@@ -7,7 +7,7 @@ from fedt.run_clients import run_clients, run_clients_with_a_specific_strategy
 
 from fedt.settings import aggregation_strategies, number_of_simulations
 
-import subprocess
+import subprocess, signal
 
 def run_server_many_times():
     for strategy in aggregation_strategies:
