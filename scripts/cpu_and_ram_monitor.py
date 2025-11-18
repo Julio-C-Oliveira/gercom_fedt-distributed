@@ -1,9 +1,8 @@
 import psutil
 import time
 import json
-from fedt.utils import create_specific_logs_folder
 
-from fedt.utils import setup_logger
+from fedt.utils import create_specific_logs_folder, setup_logger
 
 from pathlib import Path
 
@@ -28,7 +27,7 @@ parse.add_argument(
 strategy = parse.parse_args().strategy
 simulation_number = parse.parse_args().sim_number
 
-logger = utils.setup_logger(
+logger = setup_logger(
     name="CPU_RAM",
     log_file="cpu_ram.log",
     level=logging.INFO

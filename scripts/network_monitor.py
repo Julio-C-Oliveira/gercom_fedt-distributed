@@ -1,5 +1,5 @@
 from fedt.settings import scripts_folder, server_ip, server_port, network_interface
-from fedt.utils import create_specific_logs_folder
+from fedt.utils import create_specific_logs_folder, setup_logger
 
 import subprocess
 
@@ -24,7 +24,7 @@ parse.add_argument(
 strategy = parse.parse_args().strategy
 simulation_number = parse.parse_args().sim_number
 
-logger = utils.setup_logger(
+logger = setup_logger(
     name="NETWORK",
     log_file="network.log",
     level=logging.INFO
