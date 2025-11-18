@@ -18,7 +18,9 @@ def run_server_many_times():
 
             run_server(strategy)
 
+            cpu_ram_proc.wait()
             net_proc.send_signal(signal.SIGINT)
+            net_proc.wait()
             print("Server finalizado, pausa de 10 segundos...")
             time.sleep(10)
 
@@ -31,7 +33,9 @@ def run_clients_many_times():
 
             run_clients_with_a_specific_strategy(strategy)
 
+            cpu_ram_proc.wait()
             net_proc.send_signal(signal.SIGINT)
+            net_proc.wait()
             print("Clientes finalizados, pausa de 30 segundos...")
             time.sleep(30)
 
