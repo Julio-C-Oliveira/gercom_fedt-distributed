@@ -7,17 +7,19 @@ from fedt.utils import setup_logger
 
 from pathlib import Path
 
+import logging
+
 logger = utils.setup_logger(
     name="CPU_RAM",
-    log_file="fedt_server.log",
-    level=log_level
+    log_file="cpu_ram.log",
+    level=logging.INFO
 )
 
 # Lista de padrões a monitorar
 TARGET_STRINGS = ["--client-id", "fedt run server", "fedt run many-server"]
 LOG_FILE = logs_folder / "cpu_and_ram_monitor_log.json"
 CHECK_INTERVAL = 0.5
-SAVE_INTERVAL = 20
+SAVE_INTERVAL = 50
 
 def get_process_cmd(proc):
     """Retorna o comando completo de um processo como string (ou None se inacessível)."""
