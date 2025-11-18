@@ -1,4 +1,8 @@
-from fedt.settings import dataset_path, percentage_value_of_samples_per_client, validate_dataset_size, aggregation_strategies, results_folder
+from fedt.settings import (
+    dataset_path, percentage_value_of_samples_per_client, 
+    validate_dataset_size, aggregation_strategies, 
+    results_folder, logs_folder
+    )
 
 import numpy as np
 import pandas as pd
@@ -222,7 +226,8 @@ def setup_logger(name, log_file, level=logging.INFO):
     console_handler.setFormatter(color_formatter)
 
     # --- FORMATADOR PADRÃO PARA O ARQUIVO ---
-    file_handler = logging.FileHandler(f"logs/{log_file}")
+    log_file_path = logs_folder  / log_file
+    file_handler = logging.FileHandler(log_file_path)
     file_formatter = logging.Formatter(
         "%(asctime)s [%(levelname)s] [%(name)s] %(message)s"
     )
