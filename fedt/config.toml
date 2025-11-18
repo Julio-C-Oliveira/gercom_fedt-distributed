@@ -7,9 +7,9 @@ client_script_path = 'fedt/client.py'
 dataset_path = 'energydata_complete.csv'
 
 [settings]
-number_of_jobs = 12
-number_of_clients = 20
-number_of_rounds = 40
+number_of_jobs = 2
+number_of_clients = 2
+number_of_rounds = 2
 aggregation_strategy = "random"
 
 [settings.sequence]
@@ -22,7 +22,7 @@ timeout = 420
 debug = true
 
 [settings.server]
-IP = "10.126.1.109"
+IP = "0.0.0.0"
 port = "50051"
 pearson_threshold = 0.3 # 0.34
 number_of_trees_in_start = 10
@@ -37,4 +37,4 @@ train_test_split_size = 0.25
 percentage_value_of_samples_per_client = 20
 
 [scripts]
-network_interface = "eth0"
+network_interface = "lo"
