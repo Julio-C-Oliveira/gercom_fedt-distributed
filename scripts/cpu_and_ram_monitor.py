@@ -1,7 +1,7 @@
 import psutil
 import time
 import json
-from fedt.settings import create_specific_logs_folder
+from fedt.utils import create_specific_logs_folder
 
 from fedt.utils import setup_logger
 

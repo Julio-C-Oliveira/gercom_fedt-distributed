@@ -1,4 +1,5 @@
-from fedt.settings import create_specific_logs_folder, scripts_folder, server_ip, server_port, network_interface
+from fedt.settings import scripts_folder, server_ip, server_port, network_interface
+from fedt.utils import create_specific_logs_folder
 
 import subprocess
 
