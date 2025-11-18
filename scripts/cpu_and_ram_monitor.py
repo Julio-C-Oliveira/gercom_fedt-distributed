@@ -1,7 +1,7 @@
 import psutil
 import time
 import json
-from fedt.settings import logs_folder
+from fedt.settings import create_specific_logs_folder
 
 from fedt.utils import setup_logger
 
@@ -9,15 +9,36 @@ from pathlib import Path
 
 import logging
 
+import argparse
+
+parse = argparse.ArgumentParser(description="Script para monitorar o consumo de ram e cpu.")
+parse.add_argument(
+    "--strategy",
+    type=str,
+    default=None,
+    help="É a estrátegia que está rodando no momento."
+)
+parse.add_argument(
+    "--sim-number",
+    type=int,
+    default=None,
+    help="É o número da simulação."
+)
+
+strategy = parse.parse_args().strategy
+simulation_number = parse.parse_args().sim_number
+
 logger = utils.setup_logger(
     name="CPU_RAM",
     log_file="cpu_ram.log",
     level=logging.INFO
 )
 
+logs_folder = create_specific_logs_folder(strategy, "cpu_ram")
+
 # Lista de padrões a monitorar
 TARGET_STRINGS = ["--client-id", "fedt run server", "fedt run many-server"]
-LOG_FILE = logs_folder / "cpu_and_ram_monitor_log.json"
+LOG_FILE = logs_folder / f"cpu_and_ram_{strategy}_{sim_number}.json"
 CHECK_INTERVAL = 0.5
 SAVE_INTERVAL = 50
 
