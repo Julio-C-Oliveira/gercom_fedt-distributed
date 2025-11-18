@@ -3,10 +3,18 @@ import time
 import json
 from fedt.settings import logs_folder
 
+from fedt.utils import setup_logger
+
 from pathlib import Path
 
+logger = utils.setup_logger(
+    name="CPU_RAM",
+    log_file="fedt_server.log",
+    level=log_level
+)
+
 # Lista de padrões a monitorar
-TARGET_STRINGS = ["--client-id", "fedt run server"]
+TARGET_STRINGS = ["--client-id", "fedt run server", "fedt run many-server"]
 LOG_FILE = logs_folder / "cpu_and_ram_monitor_log.json"
 CHECK_INTERVAL = 0.5
 SAVE_INTERVAL = 20
@@ -35,7 +43,7 @@ def find_target_processes(targets):
     return matches
 
 def main():
-    print(f"Aguardando processos com {TARGET_STRINGS} no comando...")
+    logger.info(f"Aguardando processos com {TARGET_STRINGS} no comando...")
 
     # Espera até que pelo menos um processo apareça
     processes = {}
@@ -49,7 +57,7 @@ def main():
     iteration_count = 0
 
     active_pids = [p.pid for plist in processes.values() for p in plist]
-    print(f"Processos encontrados: {active_pids}")
+    logger.warning(f"Processos encontrados: {active_pids}")
 
     while any(processes.values()):
         for target, plist in list(processes.items()):
@@ -86,7 +94,7 @@ def main():
             for new_proc in new_list:
                 if new_proc.pid not in current_pids:
                     processes[target].append(new_proc)
-                    print(f"Novo processo detectado ({target}): PID {new_proc.pid}")
+                    logger.warning(f"Novo processo detectado ({target}): PID {new_proc.pid}")
 
         iteration_count += 1
 
@@ -94,7 +102,7 @@ def main():
         if iteration_count % SAVE_INTERVAL == 0:
             with open(LOG_FILE, "w") as f:
                 json.dump(data, f, indent=2)
-            print(f"JSON atualizado ({iteration_count} iterações).")
+            logger.info(f"JSON atualizado ({iteration_count} iterações).")
 
         time.sleep(CHECK_INTERVAL)
 
@@ -102,8 +110,8 @@ def main():
     with open(LOG_FILE, "w") as f:
         json.dump(data, f, indent=2)
 
-    print("Todos os processos finalizados. Monitoramento encerrado.")
-    print(f"Resultados salvos em '{LOG_FILE}'")
+    logger.info("Todos os processos finalizados. Monitoramento encerrado.")
+    logger.info(f"Resultados salvos em '{LOG_FILE}'")
 
 if __name__ == "__main__":
     main()
