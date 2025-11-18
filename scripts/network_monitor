@@ -9,4 +9,4 @@ echo "Iniciando captura na interface ${INTERFACE}..."
 echo "Filtrando: IP ${IP_ALVO}, porta ${PORTA}, protocolo TCP"
 echo "Arquivo de saída: ${ARQUIVO_SAIDA}"
 
-sudo tcpdump -i "${INTERFACE}" -s 0 -w "${ARQUIVO_SAIDA}" "tcp and host ${IP_ALVO} and port ${PORTA}"
+tcpdump -i "${INTERFACE}" -s 0 -w "${ARQUIVO_SAIDA}" "tcp and host ${IP_ALVO} and port ${PORTA}"
