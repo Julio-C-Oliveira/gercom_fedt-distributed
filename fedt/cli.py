@@ -13,9 +13,13 @@ def run_server_many_times():
     for strategy in aggregation_strategies:
         for i in range(number_of_simulations):
             print(f"Iniciando o servidor... Simulação: {i}")
+            cpu_ram_proc = subprocess.Popen(["fedt-cpu-ram", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
+            net_proc = subprocess.Popen(["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
 
             run_server(strategy)
 
+            cpu_ram_proc.send_signal(signal.SIGINT)
+            net_proc.send_signal(signal.SIGINT)
             print("Server finalizado, pausa de 10 segundos...")
             time.sleep(10)
 
@@ -23,9 +27,13 @@ def run_clients_many_times():
     for strategy in aggregation_strategies:
         for i in range(number_of_simulations):
             print(f"Iniciando os clientes... Simulação: {i}")
+            cpu_ram_proc = subprocess.Popen(["fedt-cpu-ram", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
+            net_proc = subprocess.Popen(["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
 
             run_clients_with_a_specific_strategy(strategy)
 
+            cpu_ram_proc.send_signal(signal.SIGINT)
+            net_proc.send_signal(signal.SIGINT)
             print("Clientes finalizados, pausa de 30 segundos...")
             time.sleep(30)
 
