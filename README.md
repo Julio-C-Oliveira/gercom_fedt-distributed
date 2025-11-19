@@ -19,3 +19,6 @@ python -m grpc_tools.protoc \
     --grpc_python_out=. \
     --mypy_out=. \
     ./fedT.proto
+
+### Tirar o sudo do tcpdump
+sudo setcap cap_net_raw,cap_net_admin=eip /usr/bin/tcpdump
