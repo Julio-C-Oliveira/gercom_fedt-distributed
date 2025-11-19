@@ -49,7 +49,7 @@ def main():
         arquivo_saida
     ])
 
-    return net_proc.pid
+    print(net_proc.pid, flush=True)
 
 if __name__ == "__main__":
     main()
