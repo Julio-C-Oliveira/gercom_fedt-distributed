@@ -36,7 +36,6 @@ def run_server_many_times():
             kill_processes(tcpdump_processes, "tcpdump")
 
             cpu_ram_proc.wait()
-            os.kill(tcpdump_pid, signal.SIGINT)
             net_proc.wait()
             print("Server finalizado, pausa de 10 segundos...")
             time.sleep(10)
@@ -61,7 +60,6 @@ def run_clients_many_times():
             kill_processes(tcpdump_processes, "tcpdump")
 
             cpu_ram_proc.wait()
-            os.kill(tcpdump_pid, signal.SIGINT)
             net_proc.wait()
             print("Clientes finalizados, pausa de 30 segundos...")
             time.sleep(30)
