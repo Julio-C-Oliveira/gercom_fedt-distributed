@@ -11,11 +11,12 @@ from fedt.utils import find_target_processes, kill_processes
 import subprocess, signal, os
 from multiprocessing import Process
 
+# Falta identificar o processo do servidor.
+
 def run_server_many_times():
     for strategy in aggregation_strategies:
         for i in range(number_of_simulations):
             print(f"Iniciando o servidor... Simulação: {i}")
-            cpu_ram_proc = subprocess.Popen(["fedt-cpu-ram", "--strategy", f"{strategy}", "--sim-number", f"{i}", "--user", "server"])
             net_proc = subprocess.Popen(
                 ["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}", "--user", "server"],
                 stdout=subprocess.PIPE,
@@ -30,6 +31,14 @@ def run_server_many_times():
                 args=(strategy,),
                 name="fedt run server")
             server_proc.start()
+
+            cpu_ram_proc = subprocess.Popen([
+                "fedt-cpu-ram", 
+                "--strategy", f"{strategy}", 
+                "--sim-number", f"{i}", 
+                "--user", "server", 
+                "--pid", f"{server_proc.pid}"])
+
             server_proc.join()
 
             tcpdump_processes = find_target_processes([tcpdump_output])
