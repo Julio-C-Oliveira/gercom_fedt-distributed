@@ -36,7 +36,7 @@ logger = setup_logger(
 logs_folder = create_specific_logs_folder(strategy, "cpu_ram")
 
 # Lista de padrões a monitorar
-TARGET_STRINGS = ["--client-id", "fedt run server", "fedt run many-server"]
+TARGET_STRINGS = ["--client-id", "fedt run server"]
 LOG_FILE = logs_folder / f"cpu_and_ram_{strategy}_{simulation_number}.json"
 CHECK_INTERVAL = 0.5
 SAVE_INTERVAL = 50

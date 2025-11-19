@@ -17,7 +17,10 @@ def run_server_many_times():
             cpu_ram_proc = subprocess.Popen(["fedt-cpu-ram", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
             net_proc = subprocess.Popen(["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
 
-            server_proc = Process(target=run_server, args=(strategy,))
+            server_proc = Process(
+                target=run_server, 
+                args=(strategy,),
+                name="fedt run server")
             server_proc.start()
             server_proc.join()
 
