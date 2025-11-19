@@ -48,6 +48,7 @@ interface = network_interface
 ip_alvo = server_ip
 porta = server_port
 arquivo_saida = logs_folder / f"{user}_{strategy}_{simulation_number}.pcap"
+comando = f"tcpdump -i {interface} -s 0 -w {arquivo_saida} tcp and host {ip_alvo} and port {porta}"
 
 def main():
     net_proc = subprocess.Popen([
@@ -55,10 +56,11 @@ def main():
         interface,
         ip_alvo,
         porta,
-        arquivo_saida
+        arquivo_saida, 
+        comando
     ])
 
-    print(net_proc.pid, flush=True)
+    print(comando, flush=True)
 
 if __name__ == "__main__":
     main()

@@ -6,6 +6,7 @@ from fedt.server import run_server
 from fedt.run_clients import run_clients, run_clients_with_a_specific_strategy
 
 from fedt.settings import aggregation_strategies, number_of_simulations
+from fedt.utils import find_target_processes, kill_processes
 
 import subprocess, signal, os
 from multiprocessing import Process
@@ -20,8 +21,7 @@ def run_server_many_times():
                 stdout=subprocess.PIPE,
                 text=True
                 )
-            tcpdump_pid = int(net_proc.stdout.readline().strip())
-            print(f"TCPDUMP: {tcpdump_pid}")
+            tcpdump_output = net_proc.stdout.readline().strip()
 
             time.sleep(3)
 
@@ -31,6 +31,9 @@ def run_server_many_times():
                 name="fedt run server")
             server_proc.start()
             server_proc.join()
+
+            tcpdump_processes = find_target_processes([tcpdump_output])
+            kill_processes(tcpdump_processes, "tcpdump")
 
             cpu_ram_proc.wait()
             os.kill(tcpdump_pid, signal.SIGINT)
@@ -48,11 +51,14 @@ def run_clients_many_times():
                 stdout=subprocess.PIPE,
                 text=True
                 )
-            tcpdump_pid = int(net_proc.stdout.readline().strip())
+            tcpdump_output = net_proc.stdout.readline().strip()
 
             time.sleep(3)
 
             run_clients_with_a_specific_strategy(strategy)
+
+            tcpdump_processes = find_target_processes([tcpdump_output])
+            kill_processes(tcpdump_processes, "tcpdump")
 
             cpu_ram_proc.wait()
             os.kill(tcpdump_pid, signal.SIGINT)

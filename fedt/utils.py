@@ -23,6 +23,10 @@ import joblib, io
 
 from pathlib import Path
 
+import psutil
+
+import signal, os
+
 def set_initial_params(model: RandomForestRegressor, X_train, y_train):
     """
     ### Função:
@@ -262,6 +266,35 @@ def create_specific_logs_folder(strategy, base_name):
     subpath = logs_folder / base_name / strategy
     subpath.mkdir(parents=True, exist_ok=True)
     return subpath
+
+def get_process_cmd(proc):
+    """Retorna o comando completo de um processo como string (ou None se inacessível)."""
+    try:
+        cmdline = proc.info.get('cmdline')
+        if not cmdline:
+            return None
+        return " ".join(cmdline)
+    except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+        return None
+
+def find_target_processes(targets):
+    """Retorna um dicionário {target_string: [Process, ...]} para cada target encontrado."""
+    matches = {t: [] for t in targets}
+    for proc in psutil.process_iter(attrs=['pid', 'cmdline']):
+        cmd = get_process_cmd(proc)
+        if not cmd:
+            continue
+        for t in targets:
+            if t in cmd:
+                matches[t].append(proc)
+                break
+    return matches
+
+def kill_processes(processes, name):
+    for target, plist in list(processes.items()):
+        for proc in list(plist):
+            if proc.name() == name:
+                os.kill(proc.pid, signal.SIGINT)
 
 
 if __name__ == "__main__":

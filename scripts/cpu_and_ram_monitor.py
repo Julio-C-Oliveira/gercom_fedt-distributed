@@ -2,7 +2,7 @@ import psutil
 import time
 import json
 
-from fedt.utils import create_specific_logs_folder, setup_logger
+from fedt.utils import create_specific_logs_folder, setup_logger, get_process_cmd, find_target_processes
 
 from pathlib import Path
 
@@ -49,29 +49,6 @@ TARGET_STRINGS = ["--client-id", "fedt run server"]
 LOG_FILE = logs_folder / f"cpu_and_ram_{user}_{strategy}_{simulation_number}.json"
 CHECK_INTERVAL = 0.5
 SAVE_INTERVAL = 50
-
-def get_process_cmd(proc):
-    """Retorna o comando completo de um processo como string (ou None se inacessível)."""
-    try:
-        cmdline = proc.info.get('cmdline')
-        if not cmdline:
-            return None
-        return " ".join(cmdline)
-    except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-        return None
-
-def find_target_processes(targets):
-    """Retorna um dicionário {target_string: [Process, ...]} para cada target encontrado."""
-    matches = {t: [] for t in targets}
-    for proc in psutil.process_iter(attrs=['pid', 'cmdline']):
-        cmd = get_process_cmd(proc)
-        if not cmd:
-            continue
-        for t in targets:
-            if t in cmd:
-                matches[t].append(proc)
-                break
-    return matches
 
 def main():
     logger.info(f"Aguardando processos com {TARGET_STRINGS} no comando...")
