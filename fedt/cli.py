@@ -14,9 +14,9 @@ def run_server_many_times():
     for strategy in aggregation_strategies:
         for i in range(number_of_simulations):
             print(f"Iniciando o servidor... Simulação: {i}")
-            cpu_ram_proc = subprocess.Popen(["fedt-cpu-ram", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
+            cpu_ram_proc = subprocess.Popen(["fedt-cpu-ram", "--strategy", f"{strategy}", "--sim-number", f"{i}", "--user", "server"])
             net_proc = subprocess.Popen(
-                ["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}"],
+                ["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}", "--user", "server"],
                 stdout=subprocess.PIPE,
                 text=True
                 )
@@ -39,8 +39,8 @@ def run_clients_many_times():
     for strategy in aggregation_strategies:
         for i in range(number_of_simulations):
             print(f"Iniciando os clientes... Simulação: {i}")
-            cpu_ram_proc = subprocess.Popen(["fedt-cpu-ram", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
-            net_proc = subprocess.Popen(["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
+            cpu_ram_proc = subprocess.Popen(["fedt-cpu-ram", "--strategy", f"{strategy}", "--sim-number", f"{i}", "--user", "server"])
+            net_proc = subprocess.Popen(["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}", "--user", "client"])
 
             run_clients_with_a_specific_strategy(strategy)
 
