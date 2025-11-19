@@ -21,7 +21,6 @@ def run_server_many_times():
                 text=True
                 )
             tcpdump_pid = int(net_proc.stdout.readline().strip())
-            print(f"TCPDUMP: {tcpdump_pid}")
 
             server_proc = Process(
                 target=run_server, 
@@ -31,7 +30,7 @@ def run_server_many_times():
             server_proc.join()
 
             cpu_ram_proc.wait()
-            os.kill()
+            os.kill(tcpdump_pid, signal.SIGINT)
             net_proc.wait()
             print("Server finalizado, pausa de 10 segundos...")
             time.sleep(10)
