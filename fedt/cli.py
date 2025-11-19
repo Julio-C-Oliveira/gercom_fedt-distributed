@@ -8,6 +8,7 @@ from fedt.run_clients import run_clients, run_clients_with_a_specific_strategy
 from fedt.settings import aggregation_strategies, number_of_simulations
 
 import subprocess, signal
+from multiprocessing import Process
 
 def run_server_many_times():
     for strategy in aggregation_strategies:
@@ -16,7 +17,9 @@ def run_server_many_times():
             cpu_ram_proc = subprocess.Popen(["fedt-cpu-ram", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
             net_proc = subprocess.Popen(["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
 
-            run_server(strategy)
+            server_proc = Process(target=run_server, args=(strategy,))
+            server_proc.start()
+            server_proc.join()
 
             cpu_ram_proc.wait()
             net_proc.send_signal(signal.SIGINT)
