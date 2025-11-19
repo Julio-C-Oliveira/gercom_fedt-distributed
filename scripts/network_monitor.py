@@ -9,7 +9,7 @@ import argparse
 
 import logging
 
-parse = argparse.ArgumentParser(description="Script para monitorar o consumo de ram e cpu.")
+parse = argparse.ArgumentParser(description="Script para monitorar o tráfego da rede.")
 parse.add_argument(
     "--strategy",
     type=str,
@@ -22,9 +22,18 @@ parse.add_argument(
     default=None,
     help="É o número da simulação."
 )
+parse.add_argument(
+    "--user",
+    type=str,
+    default=None,
+    help="Quem está rodando."
+)
 
-strategy = parse.parse_args().strategy
-simulation_number = parse.parse_args().sim_number
+
+args = parse.parse_args()
+strategy = args.strategy
+simulation_number = args.sim_number
+user = args.user
 
 logger = setup_logger(
     name="NETWORK",
@@ -38,7 +47,7 @@ script = scripts_folder / "network_monitor"
 interface = network_interface
 ip_alvo = server_ip
 porta = server_port
-arquivo_saida = logs_folder / f"captura_de_rede_{strategy}_{simulation_number}.pcap"
+arquivo_saida = logs_folder / f"{user}_{strategy}_{simulation_number}.pcap"
 
 def main():
     net_proc = subprocess.Popen([

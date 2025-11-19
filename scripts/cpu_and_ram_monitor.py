@@ -23,9 +23,18 @@ parse.add_argument(
     default=None,
     help="É o número da simulação."
 )
+parse.add_argument(
+    "--user",
+    type=str,
+    default=None,
+    help="Quem está rodando."
+)
 
-strategy = parse.parse_args().strategy
-simulation_number = parse.parse_args().sim_number
+
+args = parse.parse_args()
+strategy = args.strategy
+simulation_number = args.sim_number
+user = args.user
 
 logger = setup_logger(
     name="CPU_RAM",
@@ -37,7 +46,7 @@ logs_folder = create_specific_logs_folder(strategy, "cpu_ram")
 
 # Lista de padrões a monitorar
 TARGET_STRINGS = ["--client-id", "fedt run server"]
-LOG_FILE = logs_folder / f"cpu_and_ram_{strategy}_{simulation_number}.json"
+LOG_FILE = logs_folder / f"cpu_and_ram_{user}_{strategy}_{simulation_number}.json"
 CHECK_INTERVAL = 0.5
 SAVE_INTERVAL = 50
 
