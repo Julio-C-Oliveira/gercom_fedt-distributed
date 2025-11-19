@@ -1,7 +1,7 @@
 # Arquivos de build
+__pycache__
 build.zip
 build/
-fedt/__pycache__/
 fedt.egg-info/
 
 # Resultados

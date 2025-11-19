@@ -7,7 +7,7 @@ from fedt.run_clients import run_clients, run_clients_with_a_specific_strategy
 
 from fedt.settings import aggregation_strategies, number_of_simulations
 
-import subprocess, signal
+import subprocess, signal, os
 from multiprocessing import Process
 
 def run_server_many_times():
@@ -15,7 +15,13 @@ def run_server_many_times():
         for i in range(number_of_simulations):
             print(f"Iniciando o servidor... Simulação: {i}")
             cpu_ram_proc = subprocess.Popen(["fedt-cpu-ram", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
-            net_proc = subprocess.Popen(["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}"])
+            net_proc = subprocess.Popen(
+                ["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}"],
+                stdout=subprocess.PIPE,
+                text=True
+                )
+            tcpdump_pid = int(net_proc.stdout.readline().strip())
+            print(f"TCPDUMP: {tcpdump_pid}")
 
             server_proc = Process(
                 target=run_server, 
@@ -25,7 +31,7 @@ def run_server_many_times():
             server_proc.join()
 
             cpu_ram_proc.wait()
-            net_proc.send_signal(signal.SIGINT)
+            os.kill()
             net_proc.wait()
             print("Server finalizado, pausa de 10 segundos...")
             time.sleep(10)
@@ -40,7 +46,7 @@ def run_clients_many_times():
             run_clients_with_a_specific_strategy(strategy)
 
             cpu_ram_proc.wait()
-            net_proc.send_signal(signal.SIGINT)
+            
             net_proc.wait()
             print("Clientes finalizados, pausa de 30 segundos...")
             time.sleep(30)

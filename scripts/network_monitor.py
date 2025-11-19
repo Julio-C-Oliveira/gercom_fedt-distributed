@@ -41,13 +41,15 @@ porta = server_port
 arquivo_saida = logs_folder / f"captura_de_rede_{strategy}_{simulation_number}.pcap"
 
 def main():
-    subprocess.run([
+    net_proc = subprocess.Popen([
         script,
         interface,
         ip_alvo,
         porta,
         arquivo_saida
     ])
+
+    print(net_proc.pid, flush=True)
 
 if __name__ == "__main__":
     main()
