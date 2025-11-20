@@ -6,6 +6,7 @@ fedt.egg-info/
 
 # Resultados
 results/*/
+final_results/*/
 
 # Arquivos de log
 *.log
