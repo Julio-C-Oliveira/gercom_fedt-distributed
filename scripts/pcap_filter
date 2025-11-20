@@ -1,15 +1,11 @@
 #!/bin/bash
 
-ARQUIVO_PCAP="/tmp/capture.pcap"     
-ARQUIVO_CSV="/tmp/tcp_summary.csv"   
+ARQUIVO_PCAP=$1
+ARQUIVO_CSV=$2   
 
-echo "Convertendo ${ARQUIVO_PCAP} para ${ARQUIVO_CSV} ..."
-echo "Extraindo: frame.time_epoch ip.src, ip.dst, frame.len"
+# Extraindo: frame.time_epoch ip.src, ip.dst, frame.len
 
 tshark -r "${ARQUIVO_PCAP}" -Y 'tcp' -T fields \
   -E header=y -E separator=, \
   -e frame.time_epoch -e ip.src -e ip.dst -e frame.len \
   > "${ARQUIVO_CSV}"
-
-echo "Conversão concluída!"
-echo "Arquivo CSV salvo em: ${ARQUIVO_CSV}"
