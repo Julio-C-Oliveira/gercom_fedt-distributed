@@ -175,6 +175,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
             self.trees_warehouse.append((client_ID, client_trees))
 
         logger.debug(f"O cliente {client_ID} enviou {len(client_trees)} árvores.")
+        logger.info(f"Clientes conectados {len(self.clientes_conectados)}/{self.clientes_esperados}")
 
         while True:
             with self.lock:
