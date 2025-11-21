@@ -39,5 +39,6 @@ for strategy_path in strategies_pcap_folder:
             script_path,
             filtered_file_path
         ])
+        pcap_filter_proc.wait()
 
 logger.warning("Fim da execução.")
