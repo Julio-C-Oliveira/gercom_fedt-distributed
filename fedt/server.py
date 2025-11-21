@@ -168,47 +168,19 @@ class FedT(fedT_pb2_grpc.FedTServicer):
                 
         client_trees = utils.deserialise_several_trees(client_serialised_trees)
 
-        with self.round_condition:
-            self.trees_warehouse.append((client_ID, client_trees))
-
+        with self.lock:
             if client_ID not in self.clientes_conectados:
                 self.clientes_conectados.append(client_ID)
 
-            logger.debug(f"O cliente {client_ID} enviou {len(client_trees)} árvores.")
+            self.trees_warehouse.append((client_ID, client_trees))
 
-            start_wait = time.time()
+        logger.debug(f"O cliente {client_ID} enviou {len(client_trees)} árvores.")
 
-            while len(self.clientes_conectados) < self.clientes_esperados:
-                logger.info(f"Aguardando clientes ({len(self.clientes_conectados)}/{self.clientes_esperados})...")
-
-                remaining = server_config["timeout"] - (time.time() - start_wait)
-
-                if remaining <= 0:
-                    logger.warning(f"Timeout esperando clientes para round {self.round}. Clientes recebidos: {len(self.clientes_conectados)}/{self.clientes_esperados}")
+        while True:
+            with self.lock:
+                if self.aggregation_realised == 2:
                     break
-
-                self.round_condition.wait(timeout=remaining)
-
-            if self.aggregation_realised == 0:
-                self.aggregation_realised = 1
-                # extrai floresta apenas das tuplas recebidas
-                forests = [trees for (_, trees) in self.trees_warehouse]
-                logger.warning(f"\nIniciando agregação do round {self.round}\nAgregação iniciada pelo cliente {client_ID}\nClientes: {len(self.clientes_conectados)}")
-                try:
-                    self.agregation_start_time = time.time() 
-                    self.aggregate_strategy(forests)
-                    self.aggregation_time = time.time() - self.agregation_start_time
-                    logger.info(f"Agregação finalizada para round {self.round}.")
-                    logger.debug(f"Tempo de Agregação: {utils.format_time(self.aggregation_time)}")
-                except Exception as e:
-                    logger.critical(f"Falha na agregação: {e}")
-                finally:
-                    self.aggregation_realised = 2
-                    self.round_condition.notify_all()
-
-            else:
-                while self.aggregation_realised != 2:
-                    self.round_condition.wait(timeout=5)
+            time.sleep(0.2)
 
         serialised_global_trees = utils.serialise_several_trees(self.model.estimators_)
         number_of_trees = len(serialised_global_trees)
@@ -357,6 +329,34 @@ class FedT(fedT_pb2_grpc.FedTServicer):
 
         self.runtime_clients = []
         self.runtime_average = 0
+
+    def start_supervisor(self):
+        thread = threading.Thread(target=self.supervisor_loop, daemon=True)
+        thread.start()
+
+    def supervisor_loop(self):
+        while True:
+            time.sleep(0.2)
+
+            with self.lock:
+                if len(self.trees_warehouse) == self.clientes_esperados and self.aggregation_realised == 0:
+                    self.aggregation_realised = 1
+
+            if self.aggregation_realised == 1:
+                logger.info(f"Supervisor iniciando agregação, round {self.round}")
+
+                forests = [trees for (_, trees) in self.trees_warehouse]
+                self.agregation_start_time = time.time()
+
+                self.aggregate_strategy(forests)
+                self.aggregation_time = time.time() - self.agregation_start_time
+
+                logger.info(f"Agregação finalizada para o round {self.round}")
+
+                with self.lock:
+                    self.aggregation_realised = 2
+
+
     
 def run_server(input_aggregation_strategy=None):
     logger.info("Servidor inicializando...")
