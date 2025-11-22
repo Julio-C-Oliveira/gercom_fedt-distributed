@@ -1,10 +1,9 @@
+import asyncio
 import argparse
-
 import time
 
 from fedt.server import run_server
 from fedt.run_clients import run_clients, run_clients_with_a_specific_strategy
-
 from fedt.settings import aggregation_strategies, number_of_simulations
 from fedt.utils import find_target_processes, kill_processes
 
@@ -86,6 +85,9 @@ def run_server_and_clients():
     server_proc.wait()
     clients_proc.wait()
 
+def cmd_server():
+    return asyncio.run(run_server())
+
 def main():
     parser = argparse.ArgumentParser(
         description="fedt: Federated Learning for Decision Trees"
@@ -99,7 +101,7 @@ def main():
 
     # Subcomando: run server
     run_server_parser = run_subparsers.add_parser("server", help="Roda o servidor")
-    run_server_parser.set_defaults(func=run_server)
+    run_server_parser.set_defaults(func=cmd_server)
 
     # Subcomando: run clients
     run_clients_parser = run_subparsers.add_parser("clients", help="Roda os clientes")
