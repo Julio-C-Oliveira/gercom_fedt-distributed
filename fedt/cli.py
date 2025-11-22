@@ -10,7 +10,10 @@ from fedt.utils import find_target_processes, kill_processes
 import subprocess, signal, os
 from multiprocessing import Process
 
-# Falta identificar o processo do servidor.
+def cmd_server():
+    return asyncio.run(run_server())
+def cmd_server_with_args(strategy):
+    return asyncio.run(run_server(strategy))
 
 def run_server_many_times():
     for strategy in aggregation_strategies:
@@ -26,9 +29,9 @@ def run_server_many_times():
             time.sleep(3)
 
             server_proc = Process(
-                target=run_server, 
-                args=(strategy,),
-                name="fedt run server")
+                target=cmd_server_with_args, 
+                args=(strategy,)
+            )
             server_proc.start()
 
             cpu_ram_proc = subprocess.Popen([
@@ -84,9 +87,6 @@ def run_server_and_clients():
 
     server_proc.wait()
     clients_proc.wait()
-
-def cmd_server():
-    return asyncio.run(run_server())
 
 def main():
     parser = argparse.ArgumentParser(
