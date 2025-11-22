@@ -2,11 +2,13 @@ import tomllib
 from pathlib import Path
 import importlib.resources as res
 
-with res.files("fedt").joinpath("config.toml").open("rb") as f:
-    config = tomllib.load(f)
-
 base_path = ""
 base_path = Path(base_path).resolve()
+
+config_path = (base_path / "fedt/config.toml").resolve()
+
+with open(config_path, "rb") as file:
+    config = tomllib.load(file)
 
 results_folder = (base_path / config["paths"]["results_folder"]).resolve()
 logs_folder = (base_path / config["paths"]["logs_folder"]).resolve()
