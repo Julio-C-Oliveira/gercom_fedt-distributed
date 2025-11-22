@@ -23,7 +23,7 @@ def run_server_many_times():
                 ["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}", "--user", "server"],
                 stdout=subprocess.PIPE,
                 text=True
-                )
+            )
             tcpdump_output = net_proc.stdout.readline().strip()
 
             time.sleep(3)
