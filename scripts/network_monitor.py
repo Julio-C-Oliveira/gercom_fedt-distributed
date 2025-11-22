@@ -62,5 +62,7 @@ def main():
 
     print(comando, flush=True)
 
+    net_proc.wait()
+
 if __name__ == "__main__":
     main()
