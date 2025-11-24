@@ -296,6 +296,18 @@ def kill_processes(processes, name):
             if proc.name() == name:
                 os.kill(proc.pid, signal.SIGINT)
 
+def gerar_funcao_logaritmica(x0, y):
+    """
+    Retorna uma função f(x) = k * ln(x) tal que f(x0) = y
+    """
+    if x0 <= 0:
+        raise ValueError("x0 deve ser > 0")
+    
+    k = y / math.log(x0)
+
+    def f(x):
+        return k * math.log(x)
+    return f, k
 
 if __name__ == "__main__":
     create_specific_result_folder("Client")

@@ -103,8 +103,11 @@ class FedT(fedT_pb2_grpc.FedTServicer):
     def attach_shutdown_event(self, event):
         self.shutdown_event = event
 
-    def get_number_of_trees_per_client(self):
-        return self.round * server_config["increase_of_trees_per_round"] + server_config["number_of_trees_in_start"]
+    def get_number_of_trees_per_client(valor_alvo=900, ponto_de_convergencia=30):
+        f, _ = utils.gerar_funcao_logaritmica(ponto_de_convergencia, valor_alvo)
+        
+        number_of_trees_per_client = int(f(self.round)/self.clientes_esperados)
+        return number_of_trees_per_client if number_of_trees_per_client > 1 else 2
 
     def aggregate_strategy(self, best_forests: list[RandomForestRegressor], threshold=server_config["pearson_threshold"]):
         match self.aggregation_strategy:
