@@ -106,6 +106,9 @@ class FedT(fedT_pb2_grpc.FedTServicer):
     def get_number_of_trees_per_client(self, valor_alvo=900, ponto_de_convergencia=30):
         f, _ = utils.gerar_funcao_logaritmica(ponto_de_convergencia, valor_alvo)
         
+        if self.round <= 0:
+            return 2
+
         number_of_trees_per_client = int(f(self.round)/self.clientes_esperados)
         return number_of_trees_per_client if number_of_trees_per_client > 1 else 2
 
