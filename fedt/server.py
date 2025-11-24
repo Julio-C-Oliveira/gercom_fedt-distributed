@@ -57,7 +57,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
     def __init__(self, input_aggregation_strategy=imported_aggregation_strategy) -> None:
         super().__init__()
 
-        self.aggregation_strategy = imported_aggregation_strategy
+        self.aggregation_strategy = input_aggregation_strategy
 
         base_file_name = f"{self.aggregation_strategy}_server"
         self.results_folder = create_specific_result_folder(self.aggregation_strategy, "server")
