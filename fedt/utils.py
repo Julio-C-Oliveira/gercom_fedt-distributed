@@ -27,6 +27,8 @@ import psutil
 
 import signal, os
 
+import math
+
 def set_initial_params(model: RandomForestRegressor, X_train, y_train):
     """
     ### Função:
