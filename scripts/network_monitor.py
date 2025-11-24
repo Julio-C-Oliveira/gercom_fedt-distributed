@@ -48,19 +48,20 @@ interface = network_interface
 ip_alvo = server_ip
 porta = server_port
 arquivo_saida = logs_folder / f"{user}_{strategy}_{simulation_number}.pcap"
-comando = f"tcpdump -i {interface} -s 0 -w {arquivo_saida} tcp and host {ip_alvo} and port {porta}"
+comando = [
+    "tcpdump",
+    "-i", str(interface),
+    "-s", "256",
+    "-w", str(arquivo_saida),
+    f"tcp and host {ip_alvo} and port {porta}"
+]
 
 def main():
-    net_proc = subprocess.Popen([
-        script,
-        interface,
-        ip_alvo,
-        porta,
-        arquivo_saida, 
+    net_proc = subprocess.Popen(
         comando
-    ])
+    )
 
-    print(comando, flush=True)
+    print(*comando, flush=True)
 
     net_proc.wait()
 

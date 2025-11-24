@@ -28,26 +28,26 @@ def run_server_many_times():
 
             time.sleep(3)
 
-            server_proc = Process(
-                target=cmd_server_with_args, 
-                args=(strategy,)
-            )
-            server_proc.start()
+            # server_proc = Process(
+            #     target=cmd_server_with_args, 
+            #     args=(strategy,)
+            # )
+            # server_proc.start()
 
-            cpu_ram_proc = subprocess.Popen([
-                "fedt-cpu-ram", 
-                "--strategy", f"{strategy}", 
-                "--sim-number", f"{i}", 
-                "--user", "server", 
-                "--pid", f"{server_proc.pid}"])
+            # cpu_ram_proc = subprocess.Popen([
+            #     "fedt-cpu-ram", 
+            #     "--strategy", f"{strategy}", 
+            #     "--sim-number", f"{i}", 
+            #     "--user", "server", 
+            #     "--pid", f"{server_proc.pid}"])
 
-            server_proc.join()
+            # server_proc.join()
 
             tcpdump_processes = find_target_processes([tcpdump_output])
             kill_processes(tcpdump_processes, "tcpdump")
 
-            cpu_ram_proc.wait()
-            net_proc.wait()
+            # cpu_ram_proc.wait()
+            # net_proc.wait()
             print("Server finalizado, pausa de 10 segundos...")
             time.sleep(10)
 
