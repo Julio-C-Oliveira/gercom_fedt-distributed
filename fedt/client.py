@@ -10,7 +10,7 @@ import grpc.aio as grpc_aio
 from fedt.settings import (
     server_ip, server_port, number_of_rounds, 
     client_timeout, client_debug, 
-    imported_aggregation_strategy, many_simulations
+    imported_aggregation_strategy
 )
 from fedt import utils
 from fedt.utils import create_specific_result_folder

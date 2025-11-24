@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 from fedt.settings import (
     server_config, number_of_jobs, number_of_clients, 
-    imported_aggregation_strategy, number_of_rounds, many_simulations
+    imported_aggregation_strategy, number_of_rounds
 )
 from fedt.fedforest import FedForest
 from fedt import utils
@@ -54,12 +54,10 @@ def average_runtime(runtime_clients):
 
 
 class FedT(fedT_pb2_grpc.FedTServicer):
-    def __init__(self, input_aggregation_strategy=None) -> None:
+    def __init__(self, input_aggregation_strategy=imported_aggregation_strategy) -> None:
         super().__init__()
 
         self.aggregation_strategy = imported_aggregation_strategy
-        if many_simulations:
-            self.aggregation_strategy = input_aggregation_strategy
 
         base_file_name = f"{self.aggregation_strategy}_server"
         self.results_folder = create_specific_result_folder(self.aggregation_strategy, "server")

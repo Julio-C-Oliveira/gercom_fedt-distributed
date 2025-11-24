@@ -13,7 +13,6 @@ number_of_rounds = 40
 aggregation_strategy = "random"
 
 [settings.sequence]
-many_simulations = true
 number_of_simulations = 10
 aggregation_strategies = ['random', 'best_trees', 'threshold', 'best_forests']
 
