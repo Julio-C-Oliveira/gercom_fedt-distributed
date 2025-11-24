@@ -10,4 +10,4 @@ COMANDO=$5
 # echo "Filtrando: IP ${IP_ALVO}, porta ${PORTA}, protocolo TCP"
 # echo "Arquivo de saída: ${ARQUIVO_SAIDA}"
 
-tcpdump -i "${INTERFACE}" -s 0 -w "${ARQUIVO_SAIDA}" "tcp and host ${IP_ALVO} and port ${PORTA}"
+tcpdump -i "${INTERFACE}" -s 256 -w "${ARQUIVO_SAIDA}" "tcp and host ${IP_ALVO} and port ${PORTA}"
