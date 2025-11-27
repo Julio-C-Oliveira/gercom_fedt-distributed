@@ -5,11 +5,6 @@ import logging
 from pathlib import Path
 import subprocess
 
-# [x] Ler a pasta resultados e verificar quais pastas estão lá.
-# [ ] Ler as pastas de cada estrátegia e ver quais são os dados.
-# [ ] Carregar cada arquivo. 
-# [ ] Converter o arquivo e salvar.
-
 logger = setup_logger(
     name="NETWORK_CSV",
     log_file="network_csv.log",
