@@ -34,11 +34,25 @@ for strategy_path in strategies_pcap_folder:
         logger.info(f"Convertendo o arquivo {file_path} em csv")
 
         filtered_file_path = filtered_folder / f"{file_path.stem}.csv"
+        logger.info(f"Result path: {filtered_file_path}")
 
-        pcap_filter_proc = subprocess.Popen([
-            script_path,
-            filtered_file_path
-        ])
-        pcap_filter_proc.wait()
+        with open(filtered_file_path, "w") as file:
+            pcap_filter_proc = subprocess.Popen(
+                [
+                    "tshark",
+                    "-r", file_path,
+                    "-Y", "tcp",
+                    "-T", "fields",
+                    "-E", "header=y",
+                    "-E", "separator=,",
+                    "-e", "frame.time_epoch",
+                    "-e", "ip.src",
+                    "-e", "ip.dst",
+                    "-e", "frame.len"
+                ], 
+                stdout=file,
+                text=True
+            )
+            pcap_filter_proc.wait()
 
 logger.warning("Fim da execução.")
