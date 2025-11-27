@@ -11,6 +11,7 @@ with open(config_path, "rb") as file:
     config = tomllib.load(file)
 
 results_folder = (base_path / config["paths"]["results_folder"]).resolve()
+final_results_folder = (base_path / config["paths"]["final_results_folder"]).resolve()
 logs_folder = (base_path / config["paths"]["logs_folder"]).resolve()
 scripts_folder = (base_path / config["paths"]["scripts_path"]).resolve()
 client_script_path = (base_path / config["paths"]["client_script_path"]).resolve()

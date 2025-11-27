@@ -1,6 +1,7 @@
 [paths]
 base_path = '.'
 results_folder = 'results'
+final_results_folder = 'final_results'
 logs_folder = 'logs'
 scripts_path = 'scripts'
 client_script_path = 'fedt/client.py'
