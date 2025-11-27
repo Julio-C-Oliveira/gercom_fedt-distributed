@@ -12,7 +12,8 @@ from sklearn.ensemble import RandomForestRegressor
 
 from fedt.settings import (
     server_config, number_of_jobs, number_of_clients, 
-    imported_aggregation_strategy, number_of_rounds
+    imported_aggregation_strategy, number_of_rounds,
+    results_folder
 )
 from fedt.fedforest import FedForest
 from fedt import utils
@@ -60,7 +61,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
         self.aggregation_strategy = input_aggregation_strategy
 
         base_file_name = f"{self.aggregation_strategy}_server"
-        self.results_folder = create_specific_result_folder(self.aggregation_strategy, "server")
+        self.results_folder = create_specific_result_folder(results_folder, self.aggregation_strategy, "server")
         existing_files = [
             file for file in os.listdir(self.results_folder)
             if file.startswith(base_file_name) and file.endswith(".json")

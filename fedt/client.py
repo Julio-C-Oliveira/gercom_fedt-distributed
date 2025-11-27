@@ -10,7 +10,7 @@ import grpc.aio as grpc_aio
 from fedt.settings import (
     server_ip, server_port, number_of_rounds, 
     client_timeout, client_debug, 
-    imported_aggregation_strategy
+    imported_aggregation_strategy, results_folder
 )
 from fedt import utils
 from fedt.utils import create_specific_result_folder
@@ -67,7 +67,7 @@ def send_stream_trees(serialise_trees:bytes, client_ID:int):
 
 async def run():
     base_file_name = f"{aggregation_strategy}_client-id-{ID}"
-    results_folder = create_specific_result_folder(aggregation_strategy, f"client-id-{ID}") 
+    results_folder = create_specific_result_folder(results_folder, aggregation_strategy, f"client-id-{ID}") 
     existing_files = [
         file for file in os.listdir(results_folder)
         if file.startswith(base_file_name) and file.endswith(".json")

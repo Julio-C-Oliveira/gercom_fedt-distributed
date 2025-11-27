@@ -1,7 +1,7 @@
 from fedt.settings import (
     dataset_path, percentage_value_of_samples_per_client, 
     validate_dataset_size, aggregation_strategies, 
-    results_folder, logs_folder
+    logs_folder
     )
 
 import numpy as np
@@ -259,7 +259,7 @@ def create_strategies_result_folder():
         subpath = results_folder / strategy
         subpath.mkdir(parents=True, exist_ok=True)
 
-def create_specific_result_folder(strategy, base_name):
+def create_specific_result_folder(results_folder, strategy, base_name):
     subpath = results_folder / strategy / base_name
     subpath.mkdir(parents=True, exist_ok=True)
     return subpath
@@ -310,6 +310,3 @@ def gerar_funcao_logaritmica(x0, y):
     def f(x):
         return k * math.log(x)
     return f, k
-
-if __name__ == "__main__":
-    create_specific_result_folder("Client")
