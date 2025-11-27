@@ -254,10 +254,10 @@ def get_serialised_size_bytes(serialised) -> int:
 def get_size_of_many_serialised_models(serialised_models):
     return sum(len(model) for model in serialised_models)
 
-def create_strategies_result_folder():
-    for strategy in aggregation_strategies:
-        subpath = results_folder / strategy
-        subpath.mkdir(parents=True, exist_ok=True)
+def create_strategy_result_folder(results_folder, strategy):
+    subpath = results_folder / strategy
+    subpath.mkdir(parents=True, exist_ok=True)
+    return subpath
 
 def create_specific_result_folder(results_folder, strategy, base_name):
     subpath = results_folder / strategy / base_name
