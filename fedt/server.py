@@ -37,7 +37,7 @@ logger = utils.setup_logger(
 )
 
 # TO-DO:
-# - [ ] Adicionar o novo método de seleção de número de árvores dos clientes.
+# - [ ] Adicionar marcações para o momento do get_server_confgs e para o end_transmission.
 
 def add_end_time(runtime_clients, ID, end_time):
     for i, (client_id, start_time) in enumerate(runtime_clients):
