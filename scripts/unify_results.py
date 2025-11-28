@@ -4,6 +4,7 @@ from glob import glob
 import json
 from pathlib import Path
 import os
+import pandas as pd
 
 import logging
 
@@ -63,11 +64,84 @@ def unify_clients_and_server_data():
                 
     logger.warning("Dados internos unificados")
 
+def get_start_and_end_of_a_single_round(round, strategy_file):
+    keys = strategy_file.keys()
+
+    start_round_time = float('inf')
+    end_round_time = float('-inf')
+    for key in keys:
+        if not "server" in key:
+            if strategy_file[key][round]["round_start_time"] < start_round_time: start_round_time = strategy_file[key][round]["round_start_time"]
+            if strategy_file[key][round]["round_end_time"] > end_round_time: end_round_time = strategy_file[key][round]["round_end_time"]
+
+    return start_round_time, end_round_time
+
+def get_start_and_end_round(number_of_rounds, strategy_file):
+    time_dict = {}
+    for round in range(number_of_rounds):
+        round = str(round)
+        time_dict[round] = {}
+        time_dict[round]["round_start_time"], time_dict[round]["round_end_time"] = get_start_and_end_of_a_single_round(round, strategy_file)
+    return time_dict
+
+def add_network_traffic_on_results(result_data, time_dict, network_csv):
+    IPs_dict = {
+        "10.126.1.109" : (1, "server"),
+        "10.126.1.169" : (20, "client")
+    }
+    users = result_data.keys()
+    rounds = time_dict.keys()
+    network_traffic = {}
+    user_network_traffic = {}
+    
+    for round in rounds:
+        network_traffic[round] = network_csv[
+            (network_csv["frame.time_epoch"] >= time_dict[round]["round_start_time"]) &
+            (network_csv["frame.time_epoch"] <= time_dict[round]["round_end_time"])
+        ]
+
+    for round in rounds:
+        for user_IP in IPs_dict:
+            user_send_data = network_traffic[round][network_traffic[round]["ip.src"] == user_IP].copy()
+            user_receive_data = network_traffic[round][network_traffic[round]["ip.dst"] == user_IP].copy()
+            user_send_data["frame.len"] /= IPs_dict[user_IP][0]
+            user_receive_data["frame.len"] /= IPs_dict[user_IP][0]
+
+            if user_IP not in user_network_traffic: user_network_traffic[user_IP] = {}
+            if round not in user_network_traffic[user_IP]: user_network_traffic[user_IP][round] = {}
+
+            user_network_traffic[user_IP][round]["send_data"] = user_send_data
+            user_network_traffic[user_IP][round]["receive_data"] = user_receive_data
+
+    # Agora eu preciso só juntar com os resultados, o tráfego já está separado corretamente.
+    
 def unify_network_csv_data():
-    # Pegar as informações de inicio e fim do round e pegar os pacotes correspondentes à esse momento, 
-    #   após isso, separar em servidor e cliente, e dividir pelo número de clientes.
-    #   
-    pass
+    number_of_rounds = 40
+
+    network_csv_folder = (logs_folder / "network_csv").resolve()
+
+    strategies_folder = [path for path in network_csv_folder.iterdir() if path.is_dir()]
+    logger.info(f"Estrátegias encontradas: {[strategy_folder.name for strategy_folder in strategies_folder]}")
+
+    for strategy_folder in strategies_folder:
+        search_pattern = f"*_{strategy_folder.name}_*.csv"
+        logger.debug(f"Padrão de busca de arquivos: {search_pattern}")
+        files_path = strategy_folder.glob(search_pattern)
+
+        for path in files_path:
+            logger.info(path)
+            network_csv = pd.read_csv(path)
+
+            simulation_number = int((path.name).split("_")[-1].replace(".csv", ""))
+            logger.debug(f"Número da simulação: {simulation_number}")
+
+            strategy_result_file_path = (final_results_folder / strategy_folder.name / f"{strategy_folder.name}_{simulation_number+1}.json").resolve()
+            with open(strategy_result_file_path, "r") as result_file:
+                result_data = json.load(result_file)
+
+            time_dict = get_start_and_end_round(number_of_rounds, result_data)
+            result_data = add_network_traffic_on_results(result_data, time_dict, network_csv)
+
 
 def unify_cpu_and_ram_data():
     pass
