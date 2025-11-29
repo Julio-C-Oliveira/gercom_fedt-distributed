@@ -117,6 +117,8 @@ def add_network_traffic_on_results(result_data, time_dict, network_csv):
         if user == "server": source = "server"
         else: source = "client"
 
+        # Tenho que deixar isso mais responsivo no futuro, eliminando a tarefa de definir manualmente o mapeamento e me baseando no IPs_dict.
+
         for round in rounds:
             result_data[user][round]["send_data"] = user_network_traffic[source][round]["send_data"]
             result_data[user][round]["receive_data"] = user_network_traffic[source][round]["receive_data"]
