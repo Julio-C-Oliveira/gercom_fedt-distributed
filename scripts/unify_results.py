@@ -192,6 +192,8 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
         for round in rounds:
             str_round = str(round)
             for column in target_columns:
+                if str_round not in cpu_and_ram_dict_target_columns: cpu_and_ram_dict_target_columns[str_round] = {}
+
                 cpu_and_ram_dict_target_columns[str_round][column] = [
                     frame[column] for frame in cpu_and_ram_dict[str_round]
                 ]
