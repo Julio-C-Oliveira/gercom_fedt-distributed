@@ -215,6 +215,7 @@ def unify_cpu_and_ram_data():
                 result_data = json.load(result_file)
 
             time_dict = get_start_and_end_round(number_of_rounds, result_data)
+            user_type = "server" if "server" in path.name else "client"
             add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json)
             
 
