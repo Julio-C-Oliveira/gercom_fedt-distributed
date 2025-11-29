@@ -158,7 +158,18 @@ def unify_network_csv_data():
     logger.warning(f"Network traffic foi totalmente adicionado.")
 
 def unify_cpu_and_ram_data():
-    pass
+    number_of_rounds = 40
+
+    cpu_ram_folder = (logs_folder / "cpu_ram").resolve()
+
+    strategies_folder = [path for path in cpu_ram_folder.iterdir() if path.is_dir()]
+    logger.info(f"Estrátegias encontradas: {[strategy_folder.name for strategy_folder in strategies_folder]}")
+
+    for strategy_folder in strategies_folder:
+        search_pattern = f"cpu_and_ram_*_{strategy_folder.name}_*.json"
+        logger.debug(f"Padrão de busca de arquivos: {search_pattern}")
+        files_path = strategy_folder.glob(search_pattern)
 
 # unify_clients_and_server_data()
-unify_network_csv_data()
+# unify_network_csv_data()
+unify_cpu_and_ram_data()
