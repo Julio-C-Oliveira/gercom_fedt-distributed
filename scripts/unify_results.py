@@ -121,8 +121,8 @@ def add_network_traffic_on_results(result_data, time_dict, network_csv):
         else: source = "client"
 
         for round in rounds:
-            result_data[user][round]["send_data"] = network_traffic[source][round]["send_data"]
-            result_data[user][round]["receive_data"] = network_traffic[source][round]["receive_data"]
+            result_data[user][round]["send_data"] = user_network_traffic[source][round]["send_data"]
+            result_data[user][round]["receive_data"] = user_network_traffic[source][round]["receive_data"]
 
     return result_data
     
