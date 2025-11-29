@@ -113,9 +113,18 @@ def add_network_traffic_on_results(result_data, time_dict, network_csv):
             user_network_traffic[IPs_dict[user_IP][1]][round]["send_data"] = user_send_data["frame.len"].tolist()
             user_network_traffic[IPs_dict[user_IP][1]][round]["receive_data"] = user_receive_data["frame.len"].tolist()
 
-    # Agora eu preciso só juntar com os resultados, o tráfego já está separado corretamente. 
     logger.debug(result_data.keys())
     logger.debug(user_network_traffic.keys()) 
+
+    for user in users:
+        if user == "server": source = "server"
+        else: source = "client"
+
+        for round in rounds:
+            result_data[user][round]["send_data"] = network_traffic[source][round]["send_data"]
+            result_data[user][round]["receive_data"] = network_traffic[source][round]["receive_data"]
+
+    return result_data
     
 def unify_network_csv_data():
     number_of_rounds = 40
@@ -143,6 +152,9 @@ def unify_network_csv_data():
 
             time_dict = get_start_and_end_round(number_of_rounds, result_data)
             result_data = add_network_traffic_on_results(result_data, time_dict, network_csv)
+
+            logger.critical(result_data["server"]["0"])
+            logger.critical(result_data["client-id-5"]["0"])
 
 
 def unify_cpu_and_ram_data():
