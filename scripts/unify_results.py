@@ -173,7 +173,20 @@ def unify_cpu_and_ram_data():
         files_path = strategy_folder.glob(search_pattern)
 
         for path in files_path:
-            logger.critical(f"Path: {path.name}")
+            logger.info(path)
+            with open(path, "r") as file:
+                cpu_and_ram_json = json.load(file)
+            
+            simulation_number = int((path.name).split("_")[-1].replace(".json", ""))
+            logger.debug(f"Número da simulação: {simulation_number}")
+
+            strategy_result_file_path = (final_results_folder / strategy_folder.name / f"{strategy_folder.name}_{simulation_number+1}.json").resolve()
+            with open(strategy_result_file_path, "r") as result_file:
+                result_data = json.load(result_file)
+
+            time_dict = get_start_and_end_round(number_of_rounds, result_data)
+            
+
 
 # unify_clients_and_server_data()
 # unify_network_csv_data()
