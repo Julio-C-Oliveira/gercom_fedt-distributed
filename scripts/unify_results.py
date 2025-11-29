@@ -150,6 +150,8 @@ def unify_network_csv_data():
             time_dict = get_start_and_end_round(number_of_rounds, result_data)
             result_data = add_network_traffic_on_results(result_data, time_dict, network_csv)
 
+            with open(strategy_result_file_path, "w") as result_file:
+                json.dump(result_data, result_file, indent=4)
 
 def unify_cpu_and_ram_data():
     pass
