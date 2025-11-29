@@ -153,6 +153,10 @@ def unify_network_csv_data():
             with open(strategy_result_file_path, "w") as result_file:
                 json.dump(result_data, result_file, indent=4)
 
+            logger.warning(f"Network traffic adicionado ao {strategy_result_file_path.name}")
+
+    logger.warning(f"Network traffic foi totalmente adicionado.")
+
 def unify_cpu_and_ram_data():
     pass
 
