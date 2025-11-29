@@ -159,6 +159,36 @@ def unify_network_csv_data():
 
     logger.warning(f"Network traffic foi totalmente adicionado.")
 
+def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_type):
+    cores_dict = {
+        "server" : 4,
+        "client" : 12
+    }
+    users = result_data.keys()
+    rounds = time_dict.keys()
+    cpu_and_ram = {}
+    
+    for round in rounds:
+        if user_type == "server":
+            server_pid = cpu_and_ram_json.keys()[0]
+
+            start_round_time = time_dict[round]["round_start_time"]
+            end_round_time = time_dict[round]["round_end_time"]
+
+            cpu_and_ram[round] = [
+                frame for frame in cpu_and_ram_json[server_pid]
+                if start_round_time <= frame["timestamp"] <= end_round_time
+            ]
+            
+        elif user_type == "client":
+            pass
+
+   # for round in rounds:
+   #     network_traffic[round] = network_csv[
+   #         (network_csv["frame.time_epoch"] >= time_dict[round]["round_start_time"]) &
+  #          (network_csv["frame.time_epoch"] <= time_dict[round]["round_end_time"])
+ #       ]
+
 def unify_cpu_and_ram_data():
     number_of_rounds = 40
 
@@ -185,6 +215,7 @@ def unify_cpu_and_ram_data():
                 result_data = json.load(result_file)
 
             time_dict = get_start_and_end_round(number_of_rounds, result_data)
+            add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json)
             
 
 
