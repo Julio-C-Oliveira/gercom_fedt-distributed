@@ -197,8 +197,8 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
                 ]
 
     if user_type == "server": 
-        logger.critical(cpu_and_ram_dict_target_columns["cpu_percent"]["0"])
-        logger.critical(cpu_and_ram_dict_target_columns["memory_mb"]["0"])
+        logger.critical(cpu_and_ram_dict_target_columns["0"]["cpu_percent"])
+        logger.critical(cpu_and_ram_dict_target_columns["0"]["memory_mb"])
 
 #if IPs_dict[user_IP][1] not in user_network_traffic: user_network_traffic[IPs_dict[user_IP][1]] = {}
 #            if round not in user_network_traffic[IPs_dict[user_IP][1]]: user_network_traffic[IPs_dict[user_IP][1]][round] = {}
