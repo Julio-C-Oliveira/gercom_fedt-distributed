@@ -166,7 +166,8 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
     }
     users = result_data.keys()
     rounds = time_dict.keys()
-    cpu_and_ram = {}
+    cpu_and_ram_dict = {}
+    cpu_and_ram_dict_target_columns = {}
     
     for round in rounds:
         if user_type == "server":
@@ -175,7 +176,7 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
             start_round_time = time_dict[round]["round_start_time"]
             end_round_time = time_dict[round]["round_end_time"]
 
-            cpu_and_ram[round] = [
+            cpu_and_ram_dict[round] = [
                 frame for frame in cpu_and_ram_json[server_pid]
                 if start_round_time <= frame["timestamp"] <= end_round_time
             ]
@@ -183,7 +184,24 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
         elif user_type == "client":
             pass
 
-    if user_type == "server": logger.critical(cpu_and_ram["0"])
+        else: logger.error(f"User type desconhecido: {user_type}")
+
+    if user_type == "server":
+        target_columns = ["cpu_percent", "memory_mb"]
+
+        for round in rounds:
+            for column in target_columns:
+                cpu_and_ram_dict_target_columns[round][column] = [
+                    frame[target_columns] for frame in cpu_and_ram_dict[round]
+                ]
+
+    if user_type == "server": 
+        logger.critical(cpu_and_ram_dict_target_columns["cpu_percent"]["0"])
+        logger.critical(cpu_and_ram_dict_target_columns["memory_mb"]["0"])
+
+#if IPs_dict[user_IP][1] not in user_network_traffic: user_network_traffic[IPs_dict[user_IP][1]] = {}
+#            if round not in user_network_traffic[IPs_dict[user_IP][1]]: user_network_traffic[IPs_dict[user_IP][1]][round] = {}
+
 
    # for round in rounds:
    #     network_traffic[round] = network_csv[
