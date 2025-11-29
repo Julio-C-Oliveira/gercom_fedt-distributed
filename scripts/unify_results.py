@@ -192,7 +192,7 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
         for round in rounds:
             for column in target_columns:
                 cpu_and_ram_dict_target_columns[round][column] = [
-                    frame[target_columns] for frame in cpu_and_ram_dict[round]
+                    frame[column] for frame in cpu_and_ram_dict[round]
                 ]
 
     if user_type == "server": 
