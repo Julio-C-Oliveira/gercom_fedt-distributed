@@ -172,6 +172,9 @@ def unify_cpu_and_ram_data():
         logger.debug(f"Padrão de busca de arquivos: {search_pattern}")
         files_path = strategy_folder.glob(search_pattern)
 
+        for path in files_path:
+            logger.critical(f"Path: {path.name}")
+
 # unify_clients_and_server_data()
 # unify_network_csv_data()
 unify_cpu_and_ram_data()
