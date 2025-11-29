@@ -153,8 +153,10 @@ def unify_network_csv_data():
             time_dict = get_start_and_end_round(number_of_rounds, result_data)
             result_data = add_network_traffic_on_results(result_data, time_dict, network_csv)
 
-            logger.critical(result_data["server"]["0"])
-            logger.critical(result_data["client-id-5"]["0"])
+            logger.critical(sum(result_data["server"]["0"]["send_data"]))
+            logger.critical(sum(result_data["server"]["0"]["receive_data"]))
+            logger.critical(sum(result_data["client-id-5"]["0"]["send_data"]))
+            logger.critical(sum(result_data["client-id-5"]["0"]["receive_data"]))
 
 
 def unify_cpu_and_ram_data():
