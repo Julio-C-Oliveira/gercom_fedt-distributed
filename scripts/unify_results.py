@@ -183,6 +183,8 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
         elif user_type == "client":
             pass
 
+    if user_type == "server": logger.critical(cpu_and_ram["server"][0])
+
    # for round in rounds:
    #     network_traffic[round] = network_csv[
    #         (network_csv["frame.time_epoch"] >= time_dict[round]["round_start_time"]) &
