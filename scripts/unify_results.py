@@ -107,13 +107,13 @@ def add_network_traffic_on_results(result_data, time_dict, network_csv):
             user_send_data["frame.len"] /= IPs_dict[user_IP][0]
             user_receive_data["frame.len"] /= IPs_dict[user_IP][0]
 
-            if user_IP not in user_network_traffic: user_network_traffic[user_IP] = {}
-            if round not in user_network_traffic[user_IP]: user_network_traffic[user_IP][round] = {}
+            if IPs_dict[user_IP][1] not in user_network_traffic: user_network_traffic[IPs_dict[user_IP][1]] = {}
+            if round not in user_network_traffic[IPs_dict[user_IP][1]]: user_network_traffic[IPs_dict[user_IP][1]][round] = {}
 
-            user_network_traffic[user_IP][round]["send_data"] = user_send_data
-            user_network_traffic[user_IP][round]["receive_data"] = user_receive_data
+            user_network_traffic[IPs_dict[user_IP][1]][round]["send_data"] = user_send_data["frame.len"].tolist()
+            user_network_traffic[IPs_dict[user_IP][1]][round]["receive_data"] = user_receive_data["frame.len"].tolist()
 
-    # Agora eu preciso só juntar com os resultados, o tráfego já está separado corretamente.
+    # Agora eu preciso só juntar com os resultados, o tráfego já está separado corretamente.  
     
 def unify_network_csv_data():
     number_of_rounds = 40
