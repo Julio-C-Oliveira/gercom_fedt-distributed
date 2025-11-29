@@ -170,7 +170,7 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
     
     for round in rounds:
         if user_type == "server":
-            server_pid = cpu_and_ram_json.keys()[0]
+            server_pid = list(cpu_and_ram_json.keys())[0]
 
             start_round_time = time_dict[round]["round_start_time"]
             end_round_time = time_dict[round]["round_end_time"]
