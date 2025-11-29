@@ -153,7 +153,7 @@ def unify_network_csv_data():
             result_data = add_network_traffic_on_results(result_data, time_dict, network_csv)
 
             with open(strategy_result_file_path, "w") as result_file:
-                json.dump(result_data, result_file, indent=4)
+                json.dump(result_data, result_file, separators=(",", ":"))
 
             logger.warning(f"Network traffic adicionado ao {strategy_result_file_path.name}")
 
