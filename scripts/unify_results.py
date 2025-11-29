@@ -113,9 +113,6 @@ def add_network_traffic_on_results(result_data, time_dict, network_csv):
             user_network_traffic[IPs_dict[user_IP][1]][round]["send_data"] = user_send_data["frame.len"].tolist()
             user_network_traffic[IPs_dict[user_IP][1]][round]["receive_data"] = user_receive_data["frame.len"].tolist()
 
-    logger.debug(result_data.keys())
-    logger.debug(user_network_traffic.keys()) 
-
     for user in users:
         if user == "server": source = "server"
         else: source = "client"
@@ -152,11 +149,6 @@ def unify_network_csv_data():
 
             time_dict = get_start_and_end_round(number_of_rounds, result_data)
             result_data = add_network_traffic_on_results(result_data, time_dict, network_csv)
-
-            logger.critical(sum(result_data["server"]["0"]["send_data"])/(1024**2))
-            logger.critical(sum(result_data["server"]["0"]["receive_data"])/(1024**2))
-            logger.critical(sum(result_data["client-id-5"]["0"]["send_data"])/(1024**2))
-            logger.critical(sum(result_data["client-id-5"]["0"]["receive_data"])/(1024**2))
 
 
 def unify_cpu_and_ram_data():
