@@ -168,6 +168,8 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
     rounds = time_dict.keys()
     cpu_and_ram_dict = {}
     cpu_and_ram_dict_target_columns = {}
+
+    clients_pid = {}
     
     for round in rounds:
         if user_type == "server":
@@ -182,13 +184,27 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
             ]
             
         elif user_type == "client":
-            pass
+            clients_pid = list(cpu_and_ram_json["--client-id"].keys()) 
 
-        else: logger.error(f"User type desconhecido: {user_type}")
+            start_round_time = time_dict[round]["round_start_time"]
+            end_round_time = time_dict[round]["round_end_time"]
+            
+            for pid in clients_pid:
+                if pid not in cpu_and_ram_dict: cpu_and_ram_dict [pid] = {}
+
+                cpu_and_ram_dict[pid][round] = [
+                    frame for frame in cpu_and_ram_json["--client-id"][pid]
+                    if start_round_time <= frame["timestamp"] <= end_round_time
+                ]
+
+        else: 
+            error_message = f"User type desconhecido: {user_type}"
+            logger.error(error_message)
+            raise ValueError(error_message)
+
+    target_columns = ["cpu_percent", "memory_mb"]
 
     if user_type == "server":
-        target_columns = ["cpu_percent", "memory_mb"]
-
         for round in rounds:
             str_round = str(round)
             for column in target_columns:
@@ -198,19 +214,45 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
                     frame[column] for frame in cpu_and_ram_dict[str_round]
                 ]
 
+    elif user_type == "client":
+        for pid in clients_pid:
+            for round in rounds:
+                str_round = str(round)
+                for column in target_columns:
+                    if pid not in cpu_and_ram_dict_target_columns: cpu_and_ram_dict_target_columns[pid] = {}
+                    if str_round not in cpu_and_ram_dict_target_columns[pid]: cpu_and_ram_dict_target_columns[pid][str_round] = {}
+
+                    cpu_and_ram_dict_target_columns[pid][str_round][column] = [
+                        frame[column] for frame in cpu_and_ram_dict[pid][str_round]
+                    ]
+
     if user_type == "server": 
-        logger.critical(cpu_and_ram_dict_target_columns["0"]["cpu_percent"])
-        logger.critical(cpu_and_ram_dict_target_columns["0"]["memory_mb"])
+        for round_key, data in cpu_and_ram_dict_target_columns.items():
+            data["cpu_percent"] = [value / cores_dict["server"] for value in data["cpu_percent"]]
 
-#if IPs_dict[user_IP][1] not in user_network_traffic: user_network_traffic[IPs_dict[user_IP][1]] = {}
-#            if round not in user_network_traffic[IPs_dict[user_IP][1]]: user_network_traffic[IPs_dict[user_IP][1]][round] = {}
+    elif user_type == "client":
+        for pid in clients_pid:
+            for round_key, data in cpu_and_ram_dict_target_columns[pid].items():
+                data["cpu_percent"] = [value / cores_dict["server"] for value in data["cpu_percent"]]
 
+    if user_type == "server": 
+        for round in rounds:
+            result_data["server"][round]["cpu_percent"] = cpu_and_ram_dict_target_columns[round]["cpu_percent"]
+            result_data["server"][round]["memory_mb"] = cpu_and_ram_dict_target_columns[round]["memory_mb"]
 
-   # for round in rounds:
-   #     network_traffic[round] = network_csv[
-   #         (network_csv["frame.time_epoch"] >= time_dict[round]["round_start_time"]) &
-  #          (network_csv["frame.time_epoch"] <= time_dict[round]["round_end_time"])
- #       ]
+        return result_data
+
+    elif user_type == "client":
+        counter = 0
+        users = list(users)
+        for user in users:
+            if "server" not in user:
+                for round in rounds:
+                    result_data[user][round]["cpu_percent"] = cpu_and_ram_dict_target_columns[clients_pid[counter]][round]["cpu_percent"]
+                    result_data[user][round]["memory_mb"] = cpu_and_ram_dict_target_columns[clients_pid[counter]][round]["memory_mb"]
+                counter += 1
+        
+        return result_data
 
 def unify_cpu_and_ram_data():
     number_of_rounds = 40
@@ -239,10 +281,17 @@ def unify_cpu_and_ram_data():
 
             time_dict = get_start_and_end_round(number_of_rounds, result_data)
             user_type = "server" if "server" in path.name else "client"
-            add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_type)
+            result_data = add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_type)
+
+            with open(strategy_result_file_path, "w") as result_file:
+                json.dump(result_data, result_file, separators=(",", ":"))
+
+            logger.warning(f"Cpu and ram adicionado ao {strategy_result_file_path.name}")
+
+    logger.warning(f"Cpu and ram foi totalmente adicionado.")   
             
 
 
-# unify_clients_and_server_data()
-# unify_network_csv_data()
+unify_clients_and_server_data()
+unify_network_csv_data()
 unify_cpu_and_ram_data()
