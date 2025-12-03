@@ -16,6 +16,7 @@ logs_folder = (base_path / config["paths"]["logs_folder"]).resolve()
 scripts_folder = (base_path / config["paths"]["scripts_path"]).resolve()
 client_script_path = (base_path / config["paths"]["client_script_path"]).resolve()
 dataset_path = (base_path / config["paths"]["dataset_path"]).resolve()
+graphics_path = (base_path / config["paths"]["graphics_path"]).resolve()
 
 number_of_jobs = config["settings"]["number_of_jobs"]
 number_of_clients = config["settings"]["number_of_clients"]
