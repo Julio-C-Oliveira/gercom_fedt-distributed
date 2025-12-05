@@ -71,62 +71,61 @@ def server_mean_and_std_graphic(target_metric, file_name, compute_values_functio
 
     for strategy_folder in strategies_folder:
         strategy_name = strategy_folder.name
-        if strategy_name == "threshold":
-            search_pattern = f"{strategy_name}_*.json"
-            logger.debug(f"Padrão de busca de arquivos: {search_pattern}")
-            files_path = strategy_folder.glob(search_pattern)
+        search_pattern = f"{strategy_name}_*.json"
+        logger.debug(f"Padrão de busca de arquivos: {search_pattern}")
+        files_path = strategy_folder.glob(search_pattern)
 
-            all_sim_server_values = []
-            reference_rounds = None
+        all_sim_server_values = []
+        reference_rounds = None
 
-            for file_path in files_path:
-                with open(file_path, "r") as file:
-                    base_data = json.load(file)
+        for file_path in files_path:
+            with open(file_path, "r") as file:
+                base_data = json.load(file)
 
-                rounds, server_values = compute_values_function(base_data, target_metric)
+            rounds, server_values = compute_values_function(base_data, target_metric)
 
-                if reference_rounds is None:
-                    reference_rounds = rounds
-                else:
-                    if rounds != reference_rounds:
-                        raise ValueError(f"Rounds inconsistentes em {file_path.name}")
+            if reference_rounds is None:
+                reference_rounds = rounds
+            else:
+                if rounds != reference_rounds:
+                    raise ValueError(f"Rounds inconsistentes em {file_path.name}")
 
-                all_sim_server_values.append(server_values)
+            all_sim_server_values.append(server_values)
 
-            all_sim_server_values = np.array(all_sim_server_values)   # shape = [num_sims, num_rounds]
+        all_sim_server_values = np.array(all_sim_server_values)   # shape = [num_sims, num_rounds]
 
-            final_mean = np.mean(all_sim_server_values, axis=0)
-            final_std = np.std(all_sim_server_values, axis=0)
+        final_mean = np.mean(all_sim_server_values, axis=0)
+        final_std = np.std(all_sim_server_values, axis=0)
 
-            # Plot
-            plt.plot(
-                reference_rounds,
-                final_mean,
-                label=strategy_name,
-                color=Settings.colors[strategy_name],
-                marker=Settings.marker_styles[strategy_name],
-                markersize=Settings.markersize,
-                markevery=Settings.intervalo,
-                markeredgecolor=Settings.border_color,
-                markeredgewidth=Settings.border_weight,
-                linewidth=Settings.line_size,
-            )
+        # Plot
+        plt.plot(
+            reference_rounds,
+            final_mean,
+            label=strategy_name,
+            color=Settings.colors[strategy_name],
+            marker=Settings.marker_styles[strategy_name],
+            markersize=Settings.markersize,
+            markevery=Settings.intervalo,
+            markeredgecolor=Settings.border_color,
+            markeredgewidth=Settings.border_weight,
+            linewidth=Settings.line_size,
+        )
 
-            interval_error = Settings.intervalo
-            x_marked = reference_rounds[::interval_error]
-            y_marked = final_mean[::interval_error]
-            std_marked = final_std[::interval_error]
+        interval_error = Settings.intervalo
+        x_marked = reference_rounds[::interval_error]
+        y_marked = final_mean[::interval_error]
+        std_marked = final_std[::interval_error]
 
-            plt.errorbar(
-                x_marked,
-                y_marked,
-                yerr=std_marked,
-                fmt='none',
-                capsize=Settings.error_capsize,
-                capthick=Settings.error_capthick,
-                ecolor=Settings.colors[strategy_name],
-                alpha=Settings.error_bar_alpha
-            )
+        plt.errorbar(
+            x_marked,
+            y_marked,
+            yerr=std_marked,
+            fmt='none',
+            capsize=Settings.error_capsize,
+            capthick=Settings.error_capthick,
+            ecolor=Settings.colors[strategy_name],
+            alpha=Settings.error_bar_alpha
+        )
 
     plt.xlabel("Rounds", weight='bold')
     plt.ylabel("Time in seconds", weight='bold')
@@ -229,16 +228,6 @@ def all_clients_mean_and_std_graphic(target_metric, file_name):
     plt.savefig(f"{graphics_path}/{file_name}.pdf", format="pdf", dpi=300)
     plt.close()
 
-
-def aggregation_time_graphic():
-    pass
-
-def number_of_trees_graphic():
-    pass
-
-def network_traffic_graphic():
-    pass
-
 # Client metrics:
 # "trees_by_client"
 # "first_server_serialise_trees_size"
@@ -264,11 +253,11 @@ def network_traffic_graphic():
 # "cpu_percent"
 # "memory_mb"
 
-# server_mean_and_std_graphic(
-#     target_metric="aggregation_time",
-#     file_name="aggregation_time",
-#     compute_values_function=compute_server_values
-# )
+server_mean_and_std_graphic(
+    target_metric="aggregation_time",
+    file_name="aggregation_time",
+    compute_values_function=compute_server_values
+)
 server_mean_and_std_graphic(
     target_metric="send_data",
     file_name="send_data",
@@ -279,31 +268,31 @@ server_mean_and_std_graphic(
     file_name="receive_data",
     compute_values_function=compute_server_network_or_performance
 )
-# all_clients_mean_and_std_graphic(
-#     target_metric="fit_time",
-#     file_name="fit_time"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="squared_error",
-#     file_name="squared_error"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="pearson_corr",
-#     file_name="pearson_corr"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="round_time",
-#     file_name="round_time"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="evaluate_time",
-#     file_name="evaluate_time"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="inference_time",
-#     file_name="inference_time"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="trees_by_client",
-#     file_name="trees_by_client"
-# )
+all_clients_mean_and_std_graphic(
+    target_metric="fit_time",
+    file_name="fit_time"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="squared_error",
+    file_name="squared_error"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="pearson_corr",
+    file_name="pearson_corr"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="round_time",
+    file_name="round_time"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="evaluate_time",
+    file_name="evaluate_time"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="inference_time",
+    file_name="inference_time"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="trees_by_client",
+    file_name="trees_by_client"
+)
