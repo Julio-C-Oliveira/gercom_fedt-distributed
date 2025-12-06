@@ -159,13 +159,6 @@ def server_mean_and_std_graphic_with_zoom(
         ax,
         width=zoom_width,
         height=zoom_height,
-        loc=zoom_loc
-    )
-
-    axins = inset_axes(
-        ax,
-        width=zoom_width,
-        height=zoom_height,
         loc=zoom_loc,
         bbox_to_anchor=bbox_to_anchor,
         bbox_transform=ax.transAxes
