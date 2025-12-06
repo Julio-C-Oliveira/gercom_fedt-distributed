@@ -393,7 +393,7 @@ server_mean_and_std_graphic_with_zoom(
     zoom_height=0.8,
     zoom_loc="upper right",
     bbox_to_anchor=(0.99, 0.49),
-    zoom_xlim=(35,39),
+    zoom_xlim=(36,39),
     zoom_ylim=(0,0.004),
     zoom_ticksize=13,
     zoom_loc1=3,
