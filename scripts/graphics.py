@@ -15,8 +15,8 @@ logger = setup_logger(
 
 class Settings:
     labels_fontsize = 14
-    tricks_fontsize = 12
-    legend_fontsize = 12
+    tricks_fontsize = 13
+    legend_fontsize = 13
 
     markersize = 7
     line_size = 2.5
@@ -395,7 +395,7 @@ server_mean_and_std_graphic_with_zoom(
     bbox_to_anchor=(0.99, 0.49),
     zoom_xlim=(35,39),
     zoom_ylim=(0,0.004),
-    zoom_ticksize=12,
+    zoom_ticksize=13,
     zoom_loc1=3,
     zoom_loc2=4
 )
