@@ -378,9 +378,9 @@ def all_clients_mean_and_std_graphic(target_metric, file_name, y_label_name):
 # "memory_mb"
 
 # Locs:
-# 1 = lower left
+# 1 = upper right
 # 2 = upper left
-# 3 = upper right
+# 3 = lower left
 # 4 = lower right
 
 
@@ -390,13 +390,13 @@ server_mean_and_std_graphic_with_zoom(
     y_label_name="Time in Seconds",
     compute_values_function=compute_server_values,
     zoom_width=2.1,
-    zoom_height=1.3,
+    zoom_height=1.1,
     zoom_loc="upper right",
-    bbox_to_anchor=(0.99, 0.47),
+    bbox_to_anchor=(0.99, 0.48),
     zoom_xlim=(35,39),
     zoom_ylim=(0,0.005),
     zoom_ticksize=8,
-    zoom_loc1=1,
+    zoom_loc1=3,
     zoom_loc2=4
 )
 # server_mean_and_std_graphic(
