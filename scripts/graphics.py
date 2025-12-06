@@ -62,7 +62,7 @@ def compute_server_network_or_performance(base_data, target_metric):
 
     return rounds, np.array(values)
 
-def server_mean_and_std_graphic(target_metric, file_name, compute_values_function):
+def server_mean_and_std_graphic(target_metric, file_name, y_label_name, compute_values_function):
     logger.warning(f"Gráfico: {file_name}")
     strategies_folder = [path for path in final_results_folder.iterdir() if path.is_dir()]
     logger.info(f"Estrátegias encontrados: {[strategy_folder.name for strategy_folder in strategies_folder]}")
@@ -128,7 +128,7 @@ def server_mean_and_std_graphic(target_metric, file_name, compute_values_functio
         )
 
     plt.xlabel("Rounds", weight='bold')
-    plt.ylabel("Time in seconds", weight='bold')
+    plt.ylabel(y_label_name, weight='bold')
     plt.legend()
     plt.grid(True, alpha=Settings.grid_alpha)
     plt.tight_layout()
@@ -154,7 +154,7 @@ def compute_mean_std_per_round(base_data, target_metric):
 
     return rounds, np.array(means), np.array(stds)
     
-def all_clients_mean_and_std_graphic(target_metric, file_name):
+def all_clients_mean_and_std_graphic(target_metric, file_name, y_label_name):
     logger.warning(f"Gráfico: {file_name}")
     strategies_folder = [path for path in final_results_folder.iterdir() if path.is_dir()]
     logger.info(f"Estrátegias encontrados: {[strategy_folder.name for strategy_folder in strategies_folder]}")
@@ -221,7 +221,7 @@ def all_clients_mean_and_std_graphic(target_metric, file_name):
         )
 
     plt.xlabel("Rounds", weight='bold')
-    plt.ylabel("Time in seconds", weight='bold')
+    plt.ylabel(y_label_name, weight='bold')
     plt.legend()
     plt.grid(True, alpha=Settings.grid_alpha)
     plt.tight_layout()
@@ -256,43 +256,53 @@ def all_clients_mean_and_std_graphic(target_metric, file_name):
 server_mean_and_std_graphic(
     target_metric="aggregation_time",
     file_name="aggregation_time",
+    y_label_name="Time in Seconds",
     compute_values_function=compute_server_values
 )
 server_mean_and_std_graphic(
     target_metric="send_data",
     file_name="send_data",
+    y_label_name="Size in Bytes",
     compute_values_function=compute_server_network_or_performance
 )
 server_mean_and_std_graphic(
     target_metric="receive_data",
     file_name="receive_data",
+    y_label_name="Size in Bytes",
     compute_values_function=compute_server_network_or_performance
 )
 all_clients_mean_and_std_graphic(
     target_metric="fit_time",
-    file_name="fit_time"
+    file_name="fit_time",
+    y_label_name="Time in Seconds"
 )
 all_clients_mean_and_std_graphic(
     target_metric="squared_error",
-    file_name="squared_error"
+    file_name="squared_error",
+    y_label_name="Mean Squared Error"
 )
 all_clients_mean_and_std_graphic(
     target_metric="pearson_corr",
-    file_name="pearson_corr"
+    file_name="pearson_corr",
+    y_label_name="Pearson Correlation"
 )
 all_clients_mean_and_std_graphic(
     target_metric="round_time",
-    file_name="round_time"
+    file_name="round_time",
+    y_label_name="Time in Seconds"
 )
 all_clients_mean_and_std_graphic(
     target_metric="evaluate_time",
-    file_name="evaluate_time"
+    file_name="evaluate_time",
+    y_label_name="Time in Seconds"
 )
 all_clients_mean_and_std_graphic(
     target_metric="inference_time",
-    file_name="inference_time"
+    file_name="inference_time",
+    y_label_name="Time in Seconds"
 )
 all_clients_mean_and_std_graphic(
     target_metric="trees_by_client",
-    file_name="trees_by_client"
+    file_name="trees_by_client",
+    y_label_name="Number of Trees per Client"
 )
