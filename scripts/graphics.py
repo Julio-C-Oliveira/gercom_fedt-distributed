@@ -242,7 +242,7 @@ def server_mean_and_std_graphic_with_zoom(
         loc2=zoom_loc2,
         fc="none",
         ec="0.4",
-        alpha=0.5
+        alpha=0.3
     )
 
     ax.set_xlabel("Rounds", fontsize=Settings.labels_fontsize, weight='bold')
@@ -392,7 +392,7 @@ server_mean_and_std_graphic_with_zoom(
     zoom_width=2.1,
     zoom_height=1.1,
     zoom_loc="upper right",
-    bbox_to_anchor=(0.99, 0.48),
+    bbox_to_anchor=(0.99, 0.49),
     zoom_xlim=(35,39),
     zoom_ylim=(0,0.005),
     zoom_ticksize=8,
