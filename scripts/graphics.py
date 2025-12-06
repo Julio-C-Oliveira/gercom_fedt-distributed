@@ -13,6 +13,7 @@ logger = setup_logger(
 )
 
 class Settings:
+    fontsize = 14
     markersize = 7
     line_size = 2.5
     intervalo = 1
@@ -127,8 +128,8 @@ def server_mean_and_std_graphic(target_metric, file_name, y_label_name, compute_
             alpha=Settings.error_bar_alpha
         )
 
-    plt.xlabel("Rounds", weight='bold')
-    plt.ylabel(y_label_name, weight='bold')
+    plt.xlabel("Rounds", fontsize=Settings.fontsize, weight='bold')
+    plt.ylabel(y_label_name, fontsize=Settings.fontsize, weight='bold')
     plt.legend()
     plt.grid(True, alpha=Settings.grid_alpha)
     plt.tight_layout()
@@ -220,8 +221,8 @@ def all_clients_mean_and_std_graphic(target_metric, file_name, y_label_name):
             alpha=Settings.error_bar_alpha
         )
 
-    plt.xlabel("Rounds", weight='bold')
-    plt.ylabel(y_label_name, weight='bold')
+    plt.xlabel("Rounds", fontsize=Settings.fontsize, weight='bold')
+    plt.ylabel(y_label_name, fontsize=Settings.fontsize, weight='bold')
     plt.legend()
     plt.grid(True, alpha=Settings.grid_alpha)
     plt.tight_layout()
