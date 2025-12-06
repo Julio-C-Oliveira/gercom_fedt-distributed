@@ -13,7 +13,10 @@ logger = setup_logger(
 )
 
 class Settings:
-    fontsize = 14
+    labels_fontsize = 14
+    tricks_fontsize = 12
+    legend_fontsize = 10
+
     markersize = 7
     line_size = 2.5
     intervalo = 1
@@ -128,9 +131,11 @@ def server_mean_and_std_graphic(target_metric, file_name, y_label_name, compute_
             alpha=Settings.error_bar_alpha
         )
 
-    plt.xlabel("Rounds", fontsize=Settings.fontsize, weight='bold')
-    plt.ylabel(y_label_name, fontsize=Settings.fontsize, weight='bold')
-    plt.legend()
+    plt.xlabel("Rounds", fontsize=Settings.labels_fontsize, weight='bold')
+    plt.ylabel(y_label_name, fontsize=Settings.labels_fontsize, weight='bold')
+    plt.xticks(fontsize=Settings.tricks_fontsize)
+    plt.yticks(fontsize=Settings.tricks_fontsize)
+    plt.legend(fontsize=Settings.legend_fontsize)
     plt.grid(True, alpha=Settings.grid_alpha)
     plt.tight_layout()
     plt.savefig(f"{graphics_path}/{file_name}.pdf", format="pdf", dpi=300)
@@ -221,9 +226,11 @@ def all_clients_mean_and_std_graphic(target_metric, file_name, y_label_name):
             alpha=Settings.error_bar_alpha
         )
 
-    plt.xlabel("Rounds", fontsize=Settings.fontsize, weight='bold')
-    plt.ylabel(y_label_name, fontsize=Settings.fontsize, weight='bold')
-    plt.legend()
+    plt.xlabel("Rounds", fontsize=Settings.labels_fontsize, weight='bold')
+    plt.ylabel(y_label_name, fontsize=Settings.labels_fontsize, weight='bold')
+    plt.xticks(fontsize=Settings.tricks_fontsize)
+    plt.yticks(fontsize=Settings.tricks_fontsize)
+    plt.legend(fontsize=Settings.legend_fontsize)
     plt.grid(True, alpha=Settings.grid_alpha)
     plt.tight_layout()
     plt.savefig(f"{graphics_path}/{file_name}.pdf", format="pdf", dpi=300)
