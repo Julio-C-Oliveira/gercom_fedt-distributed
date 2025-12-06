@@ -399,50 +399,50 @@ server_mean_and_std_graphic_with_zoom(
     zoom_loc1=3,
     zoom_loc2=4
 )
-# server_mean_and_std_graphic(
-#     target_metric="send_data",
-#     file_name="send_data",
-#     y_label_name="Size in Bytes",
-#     compute_values_function=compute_server_network_or_performance
-# )
-# server_mean_and_std_graphic(
-#     target_metric="receive_data",
-#     file_name="receive_data",
-#     y_label_name="Size in Bytes",
-#     compute_values_function=compute_server_network_or_performance
-# )
-# server_mean_and_std_graphic(
-#     target_metric="fit_time",
-#     file_name="fit_time",
-#     y_label_name="Time in Seconds"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="squared_error",
-#     file_name="squared_error",
-#     y_label_name="Mean Squared Error"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="pearson_corr",
-#     file_name="pearson_corr",
-#     y_label_name="Pearson Correlation"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="round_time",
-#     file_name="round_time",
-#     y_label_name="Time in Seconds"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="evaluate_time",
-#     file_name="evaluate_time",
-#     y_label_name="Time in Seconds"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="inference_time",
-#     file_name="inference_time",
-#     y_label_name="Time in Seconds"
-# )
-# all_clients_mean_and_std_graphic(
-#     target_metric="trees_by_client",
-#     file_name="trees_by_client",
-#     y_label_name="Number of Trees per Client"
-# )
+server_mean_and_std_graphic(
+    target_metric="send_data",
+    file_name="send_data",
+    y_label_name="Size in Bytes",
+    compute_values_function=compute_server_network_or_performance
+)
+server_mean_and_std_graphic(
+    target_metric="receive_data",
+    file_name="receive_data",
+    y_label_name="Size in Bytes",
+    compute_values_function=compute_server_network_or_performance
+)
+all_clients_mean_and_std_graphic(
+    target_metric="fit_time",
+    file_name="fit_time",
+    y_label_name="Time in Seconds"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="squared_error",
+    file_name="squared_error",
+    y_label_name="Mean Squared Error"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="pearson_corr",
+    file_name="pearson_corr",
+    y_label_name="Pearson Correlation"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="round_time",
+    file_name="round_time",
+    y_label_name="Time in Seconds"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="evaluate_time",
+    file_name="evaluate_time",
+    y_label_name="Time in Seconds"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="inference_time",
+    file_name="inference_time",
+    y_label_name="Time in Seconds"
+)
+all_clients_mean_and_std_graphic(
+    target_metric="trees_by_client",
+    file_name="trees_by_client",
+    y_label_name="Number of Trees per Client"
+)
