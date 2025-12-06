@@ -390,12 +390,12 @@ server_mean_and_std_graphic_with_zoom(
     y_label_name="Time in Seconds",
     compute_values_function=compute_server_values,
     zoom_width=2.1,
-    zoom_height=1.1,
+    zoom_height=0.8,
     zoom_loc="upper right",
-    bbox_to_anchor=(0.99, 0.5),
+    bbox_to_anchor=(0.99, 0.49),
     zoom_xlim=(35,39),
-    zoom_ylim=(0,0.005),
-    zoom_ticksize=8,
+    zoom_ylim=(0,0.004),
+    zoom_ticksize=12,
     zoom_loc1=3,
     zoom_loc2=4
 )
