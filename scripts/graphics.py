@@ -377,6 +377,13 @@ def all_clients_mean_and_std_graphic(target_metric, file_name, y_label_name):
 # "cpu_percent"
 # "memory_mb"
 
+# Locs:
+# 1 = lower left
+# 2 = upper left
+# 3 = upper right
+# 4 = lower right
+
+
 server_mean_and_std_graphic_with_zoom(
     target_metric="aggregation_time",
     file_name="aggregation_time",
@@ -385,11 +392,11 @@ server_mean_and_std_graphic_with_zoom(
     zoom_width=2.1,
     zoom_height=1.3,
     zoom_loc="upper right",
-    bbox_to_anchor=(0.99, 1),
+    bbox_to_anchor=(0.99, 0.47),
     zoom_xlim=(35,39),
-    zoom_ylim=(0,1),
+    zoom_ylim=(0,0.005),
     zoom_ticksize=8,
-    zoom_loc1=2,
+    zoom_loc1=1,
     zoom_loc2=4
 )
 # server_mean_and_std_graphic(
