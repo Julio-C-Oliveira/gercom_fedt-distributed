@@ -8,6 +8,7 @@ fedt.egg-info/
 results/*/
 final_results/*/
 *.pdf
+resultados.csv
 
 # Arquivos de log
 *.log
