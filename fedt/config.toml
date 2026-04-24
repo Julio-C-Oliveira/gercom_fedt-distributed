@@ -23,7 +23,7 @@ timeout = 420
 debug = true
 
 [settings.server]
-IP = "10.126.1.109"
+IP = "0.0.0.0"
 port = "50051"
 pearson_threshold = 0.3 # 0.34
 validate_dataset_size = 1000
