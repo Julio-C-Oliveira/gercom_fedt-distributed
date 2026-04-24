@@ -10,12 +10,12 @@ graphics_path = 'graphics'
 
 [settings]
 number_of_jobs = 12
-number_of_clients = 20
-number_of_rounds = 40
+number_of_clients = 5
+number_of_rounds = 10
 aggregation_strategy = "random"
 
 [settings.sequence]
-number_of_simulations = 10
+number_of_simulations = 3
 aggregation_strategies = ['random', 'best_trees', 'threshold', 'best_forests']
 
 [settings.client]
@@ -23,7 +23,7 @@ timeout = 420
 debug = true
 
 [settings.server]
-IP = "0.0.0.0"
+IP = "192.168.1.142"
 port = "50051"
 pearson_threshold = 0.3 # 0.34
 validate_dataset_size = 1000
@@ -36,4 +36,4 @@ train_test_split_size = 0.25
 percentage_value_of_samples_per_client = 20
 
 [scripts]
-network_interface = "eth0"
+network_interface = "wlp0s20f3"

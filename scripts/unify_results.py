@@ -1,4 +1,4 @@
-from fedt.settings import final_results_folder, results_folder, logs_folder
+from fedt.settings import final_results_folder, results_folder, logs_folder, number_of_rounds
 from fedt.utils import setup_logger, create_strategy_result_folder
 from glob import glob
 import json
@@ -126,8 +126,6 @@ def add_network_traffic_on_results(result_data, time_dict, network_csv):
     return result_data
     
 def unify_network_csv_data():
-    number_of_rounds = 40
-
     network_csv_folder = (logs_folder / "network_csv").resolve()
 
     strategies_folder = [path for path in network_csv_folder.iterdir() if path.is_dir()]
@@ -255,8 +253,6 @@ def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_ty
         return result_data
 
 def unify_cpu_and_ram_data():
-    number_of_rounds = 40
-
     cpu_ram_folder = (logs_folder / "cpu_ram").resolve()
 
     strategies_folder = [path for path in cpu_ram_folder.iterdir() if path.is_dir()]

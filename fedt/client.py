@@ -67,14 +67,14 @@ def send_stream_trees(serialise_trees:bytes, client_ID:int):
 
 async def run():
     base_file_name = f"{aggregation_strategy}_client-id-{ID}"
-    results_folder = create_specific_result_folder(results_folder, aggregation_strategy, f"client-id-{ID}") 
+    new_results_folder = create_specific_result_folder(results_folder, aggregation_strategy, f"client-id-{ID}") 
     existing_files = [
-        file for file in os.listdir(results_folder)
+        file for file in os.listdir(new_results_folder)
         if file.startswith(base_file_name) and file.endswith(".json")
     ]
     next_file_index = len(existing_files) + 1
     result_file_name = f"{base_file_name}_{next_file_index}.json"
-    result_file_path = (results_folder / result_file_name).resolve()
+    result_file_path = (new_results_folder / result_file_name).resolve()
 
     logger.warning(f"Result path: {result_file_path}")
 

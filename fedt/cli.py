@@ -4,14 +4,14 @@ import time
 
 from fedt.server import run_server
 from fedt.run_clients import run_clients, run_clients_with_a_specific_strategy
-from fedt.settings import aggregation_strategies, number_of_simulations
+from fedt.settings import aggregation_strategies, number_of_simulations, imported_aggregation_strategy
 from fedt.utils import find_target_processes, kill_processes
 
 import subprocess, signal, os
 from multiprocessing import Process
 
 def cmd_server():
-    return asyncio.run(run_server())
+    return asyncio.run(run_server(imported_aggregation_strategy))
 def cmd_server_with_args(strategy):
     return asyncio.run(run_server(strategy))
 
@@ -56,22 +56,22 @@ def run_clients_many_times():
         for i in range(number_of_simulations):
             print(f"Iniciando os clientes... Simulação: {i}")
             cpu_ram_proc = subprocess.Popen(["fedt-cpu-ram", "--strategy", f"{strategy}", "--sim-number", f"{i}", "--user", "client"])
-            net_proc = subprocess.Popen(
-                ["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}", "--user", "client"],
-                stdout=subprocess.PIPE,
-                text=True
-                )
-            tcpdump_output = net_proc.stdout.readline().strip()
+            # net_proc = subprocess.Popen(
+            #     ["fedt-network", "--strategy", f"{strategy}", "--sim-number", f"{i}", "--user", "client"],
+            #     stdout=subprocess.PIPE,
+            #     text=True
+            #     )
+            # tcpdump_output = net_proc.stdout.readline().strip()
 
             time.sleep(3)
 
             run_clients_with_a_specific_strategy(strategy)
 
-            tcpdump_processes = find_target_processes([tcpdump_output])
-            kill_processes(tcpdump_processes, "tcpdump")
+            # tcpdump_processes = find_target_processes([tcpdump_output])
+            # kill_processes(tcpdump_processes, "tcpdump")
 
             cpu_ram_proc.wait()
-            net_proc.wait()
+            # net_proc.wait()
             print("Clientes finalizados, pausa de 30 segundos...")
             time.sleep(30)
 
