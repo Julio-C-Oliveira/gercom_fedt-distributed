@@ -104,7 +104,7 @@ class FedT(fedT_pb2_grpc.FedTServicer):
     def attach_shutdown_event(self, event):
         self.shutdown_event = event
 
-    def get_number_of_trees_per_client(self, valor_alvo=900, ponto_de_convergencia=30):
+    def get_number_of_trees_per_client(self, valor_alvo=300, ponto_de_convergencia=20):
         f, _ = utils.gerar_funcao_logaritmica(ponto_de_convergencia, valor_alvo)
         
         if self.round <= 0:
