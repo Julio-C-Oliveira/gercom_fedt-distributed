@@ -1,4 +1,4 @@
-from fedt.settings import number_of_clients_for_test, client_script_path
+from fedt.settings import number_of_clients_for_test, start_ID_for_clients, client_script_path
 
 import subprocess
 import time
@@ -8,7 +8,7 @@ def run_clients():
     processes = []
     
     for i in range(number_of_clients_for_test):
-        cmd = ["python3", client_script_path, "--client-id", str(i)]
+        cmd = ["python3", client_script_path, "--client-id", str(i + int(start_ID_for_clients))]
         
         # inicia o processo no diretório especificado
         p = subprocess.Popen(cmd)
@@ -25,7 +25,7 @@ def run_clients_with_a_specific_strategy(input_aggregation_strategy):
     processes = []
     
     for i in range(number_of_clients_for_test):
-        cmd = ["python3", client_script_path, "--client-id", str(i), "--strategy", input_aggregation_strategy]
+        cmd = ["python3", client_script_path, "--client-id", str(i + int(start_ID_for_clients)), "--strategy", input_aggregation_strategy]
         
         # inicia o processo no diretório especificado
         p = subprocess.Popen(cmd)
