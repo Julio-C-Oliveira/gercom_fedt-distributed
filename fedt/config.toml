@@ -11,6 +11,7 @@ graphics_path = 'graphics'
 [settings]
 number_of_jobs = 12
 number_of_clients = 5
+number_of_clients_for_test = 1
 number_of_rounds = 10
 aggregation_strategy = "random"
 

@@ -20,6 +20,7 @@ graphics_path = (base_path / config["paths"]["graphics_path"]).resolve()
 
 number_of_jobs = config["settings"]["number_of_jobs"]
 number_of_clients = config["settings"]["number_of_clients"]
+number_of_clients_for_test = config["settings"]["number_of_clients_for_test"]
 number_of_rounds = config["settings"]["number_of_rounds"]
 imported_aggregation_strategy = config["settings"]["aggregation_strategy"]
 
