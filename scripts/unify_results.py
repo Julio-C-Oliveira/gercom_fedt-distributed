@@ -86,8 +86,8 @@ def get_start_and_end_round(number_of_rounds, strategy_file):
 
 def add_network_traffic_on_results(result_data, time_dict, network_csv):
     IPs_dict = {
-        "10.126.1.109" : (1, "server"),
-        "10.126.1.169" : (20, "client")
+        "192.168.100.19" : (1, "server"),
+        "192.168.100.9" : (1, "client")
     }
     users = result_data.keys()
     rounds = time_dict.keys()
@@ -160,7 +160,7 @@ def unify_network_csv_data():
 def add_cpu_and_ram_on_results(result_data, time_dict, cpu_and_ram_json, user_type):
     cores_dict = {
         "server" : 4,
-        "client" : 12
+        "client" : 8
     }
     users = result_data.keys()
     rounds = time_dict.keys()
@@ -285,9 +285,66 @@ def unify_cpu_and_ram_data():
             logger.warning(f"Cpu and ram adicionado ao {strategy_result_file_path.name}")
 
     logger.warning(f"Cpu and ram foi totalmente adicionado.")   
-            
 
+def merge_external_clients_cpu_ram():
+    """
+    Varre as pastas de estratégias buscando subpastas com dados de clientes externos
+    e mescla os PIDs encontrados nos arquivos JSON principais.
+    """
+    cpu_ram_folder = (logs_folder / "cpu_ram").resolve()
+
+    # Encontra todas as pastas de estratégias (ex: 'random', 'best_trees')
+    strategies_folders = [path for path in cpu_ram_folder.iterdir() if path.is_dir()]
+    
+    for strategy_folder in strategies_folders:
+        # Encontra subpastas dentro da estratégia (ex: 'A14')
+        subfolders = [path for path in strategy_folder.iterdir() if path.is_dir()]
+        
+        for subfolder in subfolders:
+            logger.info(f"Lendo dados externos da subpasta '{subfolder.name}' na estratégia '{strategy_folder.name}'")
+            
+            # Pega todos os JSONs de cpu_ram dentro da subpasta externa
+            external_files = subfolder.glob("cpu_and_ram_*.json")
+            
+            for ext_file in external_files:
+                # O arquivo principal deve ter o mesmo nome, mas estar um nível acima (na pasta da estratégia)
+                main_file_path = strategy_folder / ext_file.name
+                
+                if not main_file_path.exists():
+                    logger.warning(f"Arquivo principal não encontrado: {main_file_path}")
+                    continue
+                
+                # Carrega os dados do cliente externo
+                with open(ext_file, "r") as f:
+                    external_data = json.load(f)
+                    
+                # Carrega os dados principais
+                with open(main_file_path, "r") as f:
+                    main_data = json.load(f)
+                    
+                # Mescla os dados
+                # O json é estruturado como: {"--client-id": {"PID": [metricas]}}
+                for client_key, pids_dict in external_data.items():
+                    # Garante que a chave ("--client-id" ou similar) exista no arquivo principal
+                    if client_key not in main_data:
+                        main_data[client_key] = {}
+                        
+                    # Adiciona os PIDs e suas listas de métricas ao arquivo principal
+                    for pid, metrics_list in pids_dict.items():
+                        if pid in main_data[client_key]:
+                            logger.debug(f"PID {pid} já existia em {main_file_path.name} e será sobrescrito.")
+                        
+                        main_data[client_key][pid] = metrics_list
+                
+                # Salva o arquivo principal atualizado
+                with open(main_file_path, "w") as f:
+                    json.dump(main_data, f, separators=(",", ":"))
+                
+                logger.info(f"Dados do arquivo {ext_file.name} (pasta {subfolder.name}) adicionados com sucesso.")
+
+    logger.warning("Todos os PIDs externos foram mesclados aos arquivos principais de CPU e RAM.")
 
 unify_clients_and_server_data()
 unify_network_csv_data()
+merge_external_clients_cpu_ram()
 unify_cpu_and_ram_data()

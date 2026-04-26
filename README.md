@@ -54,3 +54,7 @@ source .venv/bin/activate
 pip install .
 ```
 Após as instalações, é só rodar o cliente da mesma forma que no computador.
+
+**TO-DO:**
+
+- Resolver a captura de cpu e ram. Atualmente só está capturando o dos clientes que rodam no PC, tenho que capturar os do Raspberry e do Android e posteriormente unificar em um arquivo único dos clientes.
