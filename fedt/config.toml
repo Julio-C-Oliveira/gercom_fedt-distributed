@@ -9,8 +9,8 @@ dataset_path = 'energydata_complete.csv'
 graphics_path = 'graphics'
 
 [settings]
-number_of_jobs = 4
-number_of_clients = 2
+number_of_jobs = 12
+number_of_clients = 4
 number_of_clients_for_test = 1
 start_ID_for_clients = 0
 number_of_rounds = 40
@@ -18,14 +18,14 @@ aggregation_strategy = "random"
 
 [settings.sequence]
 number_of_simulations = 3
-aggregation_strategies = ['random', 'best_trees']
+aggregation_strategies = ['random', 'best_trees', 'threshold', 'best_forests']
 
 [settings.client]
 timeout = 420
 debug = true
 
 [settings.server]
-IP = "192.168.100.19"
+IP = "192.168.1.142"
 port = "50051"
 pearson_threshold = 0.3 # 0.34
 validate_dataset_size = 1000
@@ -38,4 +38,4 @@ train_test_split_size = 0.25
 percentage_value_of_samples_per_client = 20
 
 [scripts]
-network_interface = "wlan0"
+network_interface = "wlp0s20f3"
